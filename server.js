@@ -41,6 +41,15 @@ app.post('/openclosesensor', function (req, res) {
   res.send('Thanks for your message! ' + req.body);
 })
 
+app.post('/presence', function (req, res) {
+  try {
+    var data=JSON.parse(req.body);
+    chimeThenSpeak(chimes.presence,data.device+" has "+data.action);
+  }
+  catch(err){console.log("Error. "+JSON.stringify(err));}
+  res.send('Thanks for your message! ' + req.body);
+})
+
 app.listen(port, function () {
   console.log('Listening on port '+port+'!')
 })

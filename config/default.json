@@ -3,7 +3,8 @@
     "audioPlayer": "mplayer -really-quiet -noconsolecontrols",
     "chimes": {
         "message": "/home/pi/Music/chimes/tos_chirp.mp3",
-        "openclosesensor": "/home/pi/Music/chimes/door-entry.mp3"
+        "openclosesensor": "/home/pi/Music/chimes/door-entry.mp3",
+        "presence": "/home/pi/Music/chimes/computerbeep_29.mp3"
     },
     "ttsUrl": "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=En-us&q="
 }

@@ -1,3 +1,4 @@
+var config = require("config");
 var exec = require("child_process").exec;
 var express = require('express')
 var app = express()
@@ -5,11 +6,12 @@ var app = express()
 var bodyParser = require('body-parser');
 app.use(bodyParser.text());
 
-const port=31415;
-const chimeDir="/home/pi/Music/chimes/";
-const audioPlayer="omxplayer";
-const speechPlayer="./googlespeech.sh";
+var port=config.get("port");
+var chimes=config.get("chimes");
+var audioPlayer=config.get("audioPlayer");
+var ttsUrl=config.get("ttsUrl");
 const sp=" ";
+const q='"';
 
 app.use(function(req,res,next){
   var d=new Date().toLocaleString();
@@ -24,7 +26,7 @@ app.get('/', function (req, res) {
 app.post('/message', function (req, res) {
   try {
     var data=JSON.parse(req.body);
-    chimeThenSpeak("tos_chirp.mp3",data.message.slice(6));
+    chimeThenSpeak(chimes.message,data.message.slice(6));
   }
   catch(err){console.log("Error. "+JSON.stringify(err));}
   res.send('Thanks for your message! ' + req.body);
@@ -33,7 +35,7 @@ app.post('/message', function (req, res) {
 app.post('/openclosesensor', function (req, res) {
   try {
     var data=JSON.parse(req.body);
-    chimeAndSpeak("door-entry.mp3",data.device);
+    chimeAndSpeak(chimes.openclosesensor,data.device);
   }
   catch(err){console.log("Error. "+JSON.stringify(err));}
   res.send('Thanks for your message! ' + req.body);
@@ -46,18 +48,19 @@ app.listen(port, function () {
 function chimeThenSpeak(chime,txt)
 {
   console.log("Play chime "+chime);
-  exec(audioPlayer+sp+chimeDir+chime, function(error,stdout,stderr){speak(txt);});
+  exec(audioPlayer+sp+chime, function(error,stdout,stderr){speak(txt);});
 }
 
 function chimeAndSpeak(chime,txt)
 {
   console.log("Play chime "+chime);
-  exec(audioPlayer+sp+chimeDir+chime);
+  exec(audioPlayer+sp+chime);
   setTimeout(function(){speak(txt)},250);
 }
 
 function speak(txt)
 {
-  console.log("Speak: "+txt);
-  exec(speechPlayer+sp+txt);
+  txt=txt.trim();
+  console.log('Speak: '+q+txt+q);
+  exec(audioPlayer+sp+q+ttsUrl+txt+q);
 }

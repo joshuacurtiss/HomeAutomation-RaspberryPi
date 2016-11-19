@@ -1,0 +1,23 @@
+{
+  "name": "homeautomation",
+  "version": "0.1.0",
+  "description": "App for handling home automation with the Raspberry Pi.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Josh Curtiss <josh@curtiss.me>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi/issues"
+  },
+  "homepage": "https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi"
+}

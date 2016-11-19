@@ -13,7 +13,7 @@ const sp=" ";
 
 app.use(function(req,res,next){
   var d=new Date().toLocaleString();
-  console.log(d + ": " + req.method + " " + req.url + (req.body.length>0?"\n":"") + req.body);
+  console.log(d + ": " + req.method + " " + req.url + (req.body.length>0?"\n":" ") + (typeof req.body=="object"?JSON.stringify(req.body):req.body));
   next();
 });
 

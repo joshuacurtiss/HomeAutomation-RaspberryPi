@@ -35,7 +35,7 @@ app.post('/message', function (req, res) {
 app.post('/openclosesensor', function (req, res) {
   try {
     var data=JSON.parse(req.body);
-    chimeAndSpeak(chimes.openclosesensor,data.device);
+    chimeThenSpeak(chimes.openclosesensor,data.device);
   }
   catch(err){console.log("Error. "+JSON.stringify(err));}
   res.send('Thanks for your message! ' + req.body);
@@ -58,13 +58,6 @@ function chimeThenSpeak(chime,txt)
 {
   console.log("Play chime "+chime);
   exec(audioPlayer+sp+chime, function(error,stdout,stderr){speak(txt);});
-}
-
-function chimeAndSpeak(chime,txt)
-{
-  console.log("Play chime "+chime);
-  exec(audioPlayer+sp+chime);
-  setTimeout(function(){speak(txt)},250);
 }
 
 function speak(txt)

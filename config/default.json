@@ -1,10 +1,11 @@
 {
     "port": 31415,
     "audioPlayer": "mplayer -really-quiet -noconsolecontrols",
+    "dispPic": "export DISPLAY=:0.0;xscreensaver-command -deactivate;~/Electron/DispPicAndExit-linux-armv7l/DispPicAndExit",
     "chimes": {
-        "message": "/home/pi/Music/chimes/tos_chirp.mp3",
-        "openclosesensor": "/home/pi/Music/chimes/door-entry.mp3",
-        "presence": "/home/pi/Music/chimes/computerbeep_29.mp3"
+        "message": "~/Music/chimes/tos_chirp.mp3",
+        "openclosesensor": "~/Music/chimes/door-entry.mp3",
+        "presence": "~/Music/chimes/computerbeep_29.mp3"
     },
     "ttsUrl": "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=En-us&q="
 }

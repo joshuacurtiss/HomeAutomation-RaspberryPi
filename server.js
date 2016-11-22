@@ -9,6 +9,7 @@ app.use(bodyParser.text());
 var port=config.get("port");
 var chimes=config.get("chimes");
 var audioPlayer=config.get("audioPlayer");
+var dispPic=config.get("dispPic");
 var ttsUrl=config.get("ttsUrl");
 const sp=" ";
 const q='"';
@@ -32,9 +33,17 @@ app.post('/message', function (req, res) {
   res.send('Thanks for your message! ' + req.body);
 })
 
+app.get('/test', function (req, res) {
+  exec(dispPic+" --message \"Testing Image!\" --img img/open-door.jpg",function(error,stdout,stderr){
+    console.log("Executed Electron app. "+stdout+stderr);
+  });
+  res.send('Thanks for your message!!! ' + req.body);
+})
+
 app.post('/openclosesensor', function (req, res) {
   try {
     var data=JSON.parse(req.body);
+    exec(dispPic+" --message \""+data.device+"\" --img img/open-door.jpg");
     chimeThenSpeak(chimes.openclosesensor,data.device);
   }
   catch(err){console.log("Error. "+JSON.stringify(err));}

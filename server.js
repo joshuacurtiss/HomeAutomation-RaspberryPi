@@ -62,7 +62,7 @@ app.listen(port, function () {
 function chimeThenSpeak(chime,txt)
 {
   console.log("Play chime "+chime);
-  player.play(chime,(err)=>{speak(txt)});
+  player.play(chime,function(err){speak(txt)});
 }
 
 /***** SPEECH *****/
@@ -82,8 +82,8 @@ function speak(txt)
   console.log('Speak: '+q+txt+q);
   var filename=txt.toLowerCase().replace(/\W/g,"")+".mpg";
   var path=ttsCache+"/"+filename;
-  fs.access(path, (err) => {
-    if(err) downloadSpeech(ttsUrl+txt, path, ()=>{player.play(path)});
+  fs.access(path, function(err){
+    if(err) downloadSpeech(ttsUrl+txt, path, function(){player.play(path)});
     else player.play(path);
   });
 }

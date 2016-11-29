@@ -25,7 +25,10 @@ Integration with the SmartThings hub is the key to the app being of any value. T
 must be installed and configured on your SmartThings deployment to provide the integration between 
 SmartThings and the Raspberry Pi app.
 
-Optionally, installing [Jasper](http://jasperproject.github.io) allows you to have  
+Optionally, installing [Jasper](http://jasperproject.github.io) allows you to have voice control abilities. 
+This may seem unnecessary if you use Amazon Echo, but it presently has restrictions and limitations that 
+make it inconvenient for home security. Implementing local voice control gives complete control, albeit in 
+a secondary system.
 
 Also optional, installing [Shairport Sync](https://github.com/mikebrady/shairport-sync) allows the device to
 double as an AirPlay speaker for whatever room it is placed in.

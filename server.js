@@ -1,3 +1,6 @@
+var fs = require('fs');
+var request = require('request');
+var player = require('play-sound')(opts={});
 var config = require("config");
 var exec = require("child_process").exec;
 var express = require('express')
@@ -8,10 +11,7 @@ app.use(bodyParser.text());
 
 var port=config.get("port");
 var chimes=config.get("chimes");
-var audioPlayer=config.get("audioPlayer");
 var dispPic=config.get("dispPic");
-var ttsUrl=config.get("ttsUrl");
-const sp=" ";
 const q='"';
 
 app.use(function(req,res,next){
@@ -62,12 +62,28 @@ app.listen(port, function () {
 function chimeThenSpeak(chime,txt)
 {
   console.log("Play chime "+chime);
-  exec(audioPlayer+sp+chime, function(error,stdout,stderr){speak(txt);});
+  player.play(chime,(err)=>{speak(txt)});
 }
+
+/***** SPEECH *****/
+
+function downloadSpeech(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log("Downloading "+res.headers['content-type']+" with length "+res.headers['content-length']+".");
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+};
 
 function speak(txt)
 {
+  var ttsUrl=config.get("ttsUrl");
+  var ttsCache=config.get("ttsCache");
   txt=txt.trim();
   console.log('Speak: '+q+txt+q);
-  exec(audioPlayer+sp+q+ttsUrl+txt+q);
+  var filename=txt.toLowerCase().replace(/\W/g,"")+".mpg";
+  var path=ttsCache+"/"+filename;
+  fs.access(path, (err) => {
+    if(err) downloadSpeech(ttsUrl+txt, path, ()=>{player.play(path)});
+    else player.play(path);
+  });
 }

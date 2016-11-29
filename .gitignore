@@ -17,6 +17,9 @@ coverage
 # Configs
 config/*
 
+# Test Code
+test*
+
 # nyc test coverage
 .nyc_output
 

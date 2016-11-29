@@ -7,7 +7,7 @@ var express = require('express')
 var app = express()
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.text());
+app.use(bodyParser.json());
 
 var port=config.get("port");
 var chimes=config.get("chimes");
@@ -26,32 +26,27 @@ app.get('/', function (req, res) {
 
 app.post('/api/message', function (req, res) {
   try {
-    var data=JSON.parse(req.body);
+    var data=req.body;
     chimeThenSpeak(chimes.message,data.message.slice(6));
   }
-  catch(err){console.log("Error. "+JSON.stringify(err));}
+  catch(err){console.log("Error. "+err)}
   res.send('Thanks for your message! ' + req.body);
-})
-
-app.get('/api/test', function (req, res) {
-  exec(dispPic+" --message \"Testing Image!\" --img img/open-door.jpg",function(error,stdout,stderr){
-    console.log("Executed Electron app. "+stdout+stderr);
-  });
-  res.send('Thanks for your message!!! ' + req.body);
 })
 
 app.post('/api/notification/:type', function (req, res) {
   var type=req.params.type;
   try {
-    var data=JSON.parse(req.body);
+    var data=req.body;
     if( type=="openclosesensor" ) {
       exec(dispPic+" --message \""+data.device+"\" --img img/open-door.jpg");
       chimeThenSpeak(chimes.openclosesensor,data.device);
     } else if( type=="presence" ) {
       chimeThenSpeak(chimes.presence,data.device+" has "+data.action);
+    } else if( type=="test" ) {
+      chimeThenSpeak(chimes.openclosesensor,data.device);
     }
   }
-  catch(err){console.log("Error. "+JSON.stringify(err));}
+  catch(err){console.log("Error. "+err)}
   res.send('Notification: ' + type + " " + req.body);
 })
 

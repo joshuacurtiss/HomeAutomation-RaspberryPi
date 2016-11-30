@@ -33,6 +33,12 @@ app.post('/api/message', function (req, res) {
   res.send('Thanks for your message! ' + req.body);
 })
 
+app.get('/api/notification/shm/:mode', function (req, res) {
+  var mode=req.params.mode;
+  console.log("Smart Home Monitor set to "+mode+".");
+  res.send("Smart Home Monitor: "+mode+".");
+})
+
 app.post('/api/notification/:type', function (req, res) {
   var type=req.params.type;
   try {

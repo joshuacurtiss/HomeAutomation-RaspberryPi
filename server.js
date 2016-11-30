@@ -39,6 +39,12 @@ app.get('/api/notification/shm/:mode', function (req, res) {
   res.send("Smart Home Monitor: "+mode+".");
 })
 
+app.get('/api/notification/intrusion/:mode', function (req, res) {
+  var mode=req.params.mode;
+  console.log("Intrusion status is "+mode+".");
+  res.send("Intrusion status: "+mode+".");
+})
+
 app.post('/api/notification/:type', function (req, res) {
   var type=req.params.type;
   try {

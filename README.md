@@ -105,18 +105,13 @@ Other optional equipment you may choose to acquire:
 
 7. Configure things on the [SmartThings/dev](http://developer.smartthings.com) site:
 
+   * For intrusion detection, create a virtual switch using the `Simulated Switch` type. Name it something like
+     "Intrusion Notifier". When you install Pi Guardian smart app, use this switch under the "Intrusion Detection"
+     section. If you already have a siren triggering upon intrusion, this virtual switch is not necessary. 
+
    * Install the Pi Guardian SmartApp on your account and publish it "For Yourself". Then go into the SmartThings 
      app on your mobile device and install and configure Pi Guardian for your home.
    
-   * For intrusion detection, create a virtual switch that talks to Pi Guardian. Create a device handler for a
-     [URI Switch](http://thingsthataresmart.wiki/index.php?title=URI_Switch), then add a virtual switch under the
-     devices section that uses the URI switch. Set its external settings to be: 
-     
-     On: `http://yourhomeaddress.com:31415/api/notification/intrusion/on`  
-     Off: `http://yourhomeaddress.com:31415/api/notification/intrusion/off`
-
-     Lastly, set your Smart Home Monitor to trigger this "light" when intrusions are detected. 
-
 8. Enjoy!
 
 ### Installation of Miscellaneous Niceties ###

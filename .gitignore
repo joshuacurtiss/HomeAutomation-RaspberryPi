@@ -15,11 +15,11 @@ lib-cov
 coverage
 
 # Configs
-config/*
-cache/*
+*/config/*
+*/cache/*
 
 # Test Code
-test*
+*test*
 
 # nyc test coverage
 .nyc_output
@@ -31,7 +31,8 @@ test*
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
+*/build/*
+*/dist/*
 
 # Dependency directories
 node_modules

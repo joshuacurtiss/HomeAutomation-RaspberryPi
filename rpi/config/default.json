@@ -1,6 +1,5 @@
 {
     "port": 31415,
-    "dispPic": "export DISPLAY=:0.0;xscreensaver-command -deactivate;~/Electron/DispPicAndExit-linux-armv7l/DispPicAndExit",
     "chimes": {
         "message": "~/Music/chimes/tos_chirp.mp3",
         "openclosesensor": "~/Music/chimes/door-entry.mp3",

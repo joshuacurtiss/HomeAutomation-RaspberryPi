@@ -1,3 +1,4 @@
+const electron = require("electron");
 var fs = require('fs');
 var request = require('request');
 var player = require('play-sound')(opts={});
@@ -11,8 +12,12 @@ app.use(bodyParser.json());
 
 var port=config.get("port");
 var chimes=config.get("chimes");
-var dispPic=config.get("dispPic");
 const q='"';
+
+electron.app.on("ready", () => {
+    let win=new electron.BrowserWindow({width:300, height:200, x:10, y:10});
+    win.loadURL(`file://${__dirname}/views/index.html`);
+});
 
 app.use(function(req,res,next){
   var d=new Date().toLocaleString();
@@ -50,7 +55,14 @@ app.post('/api/notification/:type', function (req, res) {
   try {
     var data=req.body;
     if( type=="openclosesensor" ) {
-      exec(dispPic+" --message \""+data.device+"\" --img img/open-door.jpg");
+      // TODO: May still have to call `xscreensaver-command -deactivate`? 
+      let win=new electron.BrowserWindow({width:800, height:480, show:false});
+      win.on('ready-to-show', function() {
+          win.setFullScreen(true);
+          win.show();
+          win.focus();
+      });
+      win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device}&style=door`);
       chimeThenSpeak(chimes.openclosesensor,data.device);
     } else if( type=="presence" ) {
       chimeThenSpeak(chimes.presence,data.device+" has "+data.action);

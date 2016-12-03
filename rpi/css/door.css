@@ -1,0 +1,15 @@
+body 
+{
+    background-image: url(../img/door.jpg);
+    background-size: cover;
+    font-family: sans-serif; 
+}
+#msg 
+{
+    font-size: 36px; 
+    position:absolute;
+    top: 30%; 
+    left: 4%; 
+    right: 50%;
+    text-align: center;
+}

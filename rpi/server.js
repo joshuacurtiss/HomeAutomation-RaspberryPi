@@ -55,15 +55,18 @@ app.post('/api/notification/:type', function (req, res) {
   try {
     var data=req.body;
     if( type=="openclosesensor" ) {
-      // TODO: May still have to call `xscreensaver-command -deactivate`? 
-      let win=new electron.BrowserWindow({width:800, height:480, show:false});
-      win.on('ready-to-show', function() {
-          win.setFullScreen(true);
-          win.show();
-          win.focus();
-      });
-      win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device}&style=door`);
-      chimeThenSpeak(chimes.openclosesensor,data.device);
+      // TODO: May still have to call `xscreensaver-command -deactivate`?
+      if( data.action=="open" ) // "open" or "closed"
+      {
+        let win=new electron.BrowserWindow({width:800, height:480, show:false});
+        win.on('ready-to-show', function() {
+            win.setFullScreen(true);
+            win.show();
+            win.focus();
+        });
+        win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device}&style=door`);
+        chimeThenSpeak(chimes.openclosesensor,data.device);
+      } 
     } else if( type=="presence" ) {
       chimeThenSpeak(chimes.presence,data.device+" has "+data.action);
     } else if( type=="test" ) {

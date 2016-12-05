@@ -54,14 +54,14 @@ def updated() {
 
 def initialize() {
 	log.debug "Subscribe to ${contact} and ${presence}"
-	subscribe(contact, "contact.open", contactOpenHandler)
+	subscribe(contact, "contact", contactHandler)
     subscribe(presence, "presence", presenceHandler) 
     subscribe(location, "alarmSystemStatus", alarmStatusHandler)
     subscribe(intrusionSwitch, "switch", intrusionHandler)
     subscribe(intrusionAlarm, "alarm", intrusionHandler)
 }
 
-def contactOpenHandler(evt) {
+def contactHandler(evt) {
     def params = [
         uri: "${settings.uri}/notification/openclosesensor",
         body: [

@@ -1,5 +1,11 @@
 {
     "theme": "dark",
+    "passcodeLength": 4, 
+    "passcodes": {
+        "1111": {"name":"Josh","type":"normal"},
+        "2222": {"name":"KD","type":"normal"},
+        "9999": {"name":"Duress","type":"duress"}
+    },
     "widgets": [
         {
             "type":"datetime"

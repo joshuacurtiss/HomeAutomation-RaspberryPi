@@ -17,6 +17,7 @@ coverage
 # Configs
 */config/*
 */cache/*
+*/data/*
 
 # Test Code
 *test*

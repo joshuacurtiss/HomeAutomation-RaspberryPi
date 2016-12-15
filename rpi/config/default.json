@@ -6,5 +6,25 @@
         "presence": "~/Music/chimes/computerbeep_29.mp3"
     },
     "ttsCache": "cache",
-    "ttsUrl": "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=En-us&q="
+    "ttsUrl": "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=En-us&q=",
+    "widgetTypes": {
+        "datetime": {
+            "classes": "gray x2"
+        },
+        "lock": {
+            "iconoff": "fa fa-fw fa-lock dim",
+            "iconon": "fa fa-fw fa-unlock-alt",
+            "classes": "green x1"
+        },
+        "light": {
+            "iconoff": "fa fa-fw fa-lightbulb-o dim",
+            "iconon": "fa fa-fw fa-lightbulb-o",
+            "classes": "red x1"
+        },
+        "presence": {
+            "iconoff": "fa fa-fw fa-map-marker dim",
+            "iconon": "fa fa-fw fa-map-marker",
+            "classes": "blue x1"
+        }
+    }
 }

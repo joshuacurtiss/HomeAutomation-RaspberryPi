@@ -1,0 +1,42 @@
+{
+    "theme": "dark",
+    "widgets": [
+        {
+            "type":"datetime"
+        },
+        {
+            "type":"presence",
+            "title":"Josh"
+        },
+        {
+            "type":"presence",
+            "title":"KD"
+        },
+        {
+            "type":"light",
+            "title":"Basement Lamp"
+        },
+        {
+            "type":"light",
+            "title":"Bedroom Fan Light"
+        },
+        {
+            "type":"light",
+            "title":"Living Room"
+        },
+        {
+            "type":"light",
+            "title":"Front Porch"
+        },
+        {
+            "type":"lock",
+            "title":"Front Deadbolt",
+            "battery":3
+        },
+        {
+            "type":"lock",
+            "title":"Side Deadbolt",
+            "battery":1
+        }
+    ]
+}

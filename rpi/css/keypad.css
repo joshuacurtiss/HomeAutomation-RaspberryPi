@@ -1,0 +1,42 @@
+html, body {
+    font-family: "Avenir Next", Arial, Helvetica, sans-serif;
+}
+.keypad {
+    width: 250px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
+.keypad h1 {
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center;
+    padding: 15px 0 0 0;
+    margin: 0;
+}
+.keypad .passcodeui {
+    margin: 12px 0 10px 0;
+    text-align: center;
+}
+.keypad .passcodeui i {
+    letter-spacing: 9px;
+}
+.keypad button {
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    background-color: #e2e2e2;
+    margin: 10px;
+    width: 60px; 
+    height: 60px;
+    font-size: 24px;
+}
+.keypad button.function {
+    font-size: 12px;
+    background-color: transparent;
+    padding-top: -5px;
+    border:0;
+}
+.keypad button div {
+    font-size: 8px;
+    margin-top: -2px;
+    text-transform: uppercase;
+}

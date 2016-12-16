@@ -1,6 +1,11 @@
 let jQuery=$=require("../bower_components/jquery/dist/jquery.min.js");
 require("../bower_components/jquery-ui/jquery-ui.min.js");
 let data=require("../data/data.json");
+let load=require("../js/resourceLoader.js");
+
+load(`../bower_components/font-awesome/css/font-awesome.min.css`);
+load(`../css/keypad.css`);
+
 $(document).ready(function(){
     // Draw the passcode dots
     var passcodeLength=data.passcodeLength || 4;

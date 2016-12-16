@@ -15,8 +15,8 @@ var chimes=config.get("chimes");
 const q='"';
 
 electron.app.on("ready", () => {
-    let win=new electron.BrowserWindow({width:300, height:200, x:10, y:10});
-    win.loadURL(`file://${__dirname}/views/index.html`);
+    let win=new electron.BrowserWindow(config.get("startWindowOptions"));
+    win.loadURL(`file://${__dirname}${config.get("startWindowFile")}`);
 });
 
 app.use(function(req,res,next){

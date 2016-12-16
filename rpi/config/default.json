@@ -1,5 +1,7 @@
 {
     "port": 31415,
+    "startWindowFile": "/views/index.html",
+    "startWindowOptions": {"width":800, "height":480},
     "chimes": {
         "message": "~/Music/chimes/tos_chirp.mp3",
         "openclosesensor": "~/Music/chimes/door-entry.mp3",

@@ -17,6 +17,7 @@ $(document).ready(function(){
 });
 function handleKeypadClick(){
     addPasscodeDigit(this.value);
+    this.blur();
 }
 function handleKeypress(event){
     addPasscodeDigit(event.key);

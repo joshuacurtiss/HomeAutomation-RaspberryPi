@@ -20,18 +20,21 @@ $(document).ready(()=>{
         widgetType=widgetTypes[widget.type];
         if( widgetType )
         {
+            // Special handling for datetime:
             if( widget.type=="datetime" )
             {
                 html=`<div data-type="${widget.type}" class="widget ${widgetType.classes || ''}">` +
-                     `<h1 class="date"></h1>` +
-                     `<div class="timedow"></div>`+
+                     `<h1></h1>` +
+                     `<div class="comment"></div>`+
                      `<div class="time"></div>`+
                      `</div>`;
             }
+            // Everything else:
             else
             {
                 html=`<div data-type="${widget.type}" class="widget ${widgetType.classes || ''}">` +
                      `<h1>${widget.title || ''}</h1>` +
+                     `<div class="comment">${widget.comment || ""}</div>` +
                      `<i class="${widgetType.iconoff}"></i>`;
                 if( widget.battery ) html+=`<span class="fa fa-battery-${widget.battery}"></span>`;
                 html+=`</div>`;
@@ -45,9 +48,9 @@ $(document).ready(()=>{
 function updateTime()
 {
     var now=moment();
-    $(".date").html(now.format(DATEFMT));
+    $(".widget[data-type=datetime] h1").html(now.format(DATEFMT));
     $(".time").html(now.format(TIMEFMT));
-    $(".timedow").html(now.format(DOWFMT));
+    $(".widget[data-type=datetime] .comment").html(now.format(DOWFMT));
     var sec=now.seconds();
     setTimeout(updateTime,(60-sec)*1000);
 }

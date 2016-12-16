@@ -13,6 +13,11 @@
         "datetime": {
             "classes": "gray x2"
         },
+        "shm": {
+            "iconoff": "fa fa-fw fa-shield dim",
+            "iconon": "fa fa-fw fa-shield",
+            "classes": "maroon x2"
+        },
         "lock": {
             "iconoff": "fa fa-fw fa-lock dim",
             "iconon": "fa fa-fw fa-unlock-alt",

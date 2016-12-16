@@ -8,6 +8,11 @@
     },
     "widgets": [
         {
+            "type":"shm",
+            "title":"Smart Home Monitor",
+            "comment":"Armed (away)"
+        },
+        {
             "type":"datetime"
         },
         {

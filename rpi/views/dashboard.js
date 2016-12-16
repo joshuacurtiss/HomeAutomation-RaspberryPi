@@ -1,4 +1,4 @@
-let jQuery=$=require("jquery");
+let jQuery=$=require("../bower_components/jquery/dist/jquery.min.js");
 let config = require("config");
 let data=require("../data/data.json");
 let widgetTypes=config.get("widgetTypes");

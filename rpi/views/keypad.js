@@ -1,4 +1,5 @@
-let jQuery=$=require("jquery");
+let jQuery=$=require("../bower_components/jquery/dist/jquery.min.js");
+require("../bower_components/jquery-ui/jquery-ui.min.js");
 let data=require("../data/data.json");
 $(document).ready(function(){
     // Draw the passcode dots
@@ -21,7 +22,7 @@ function handleKeypadSubmit(){
     if( codedata ) {
         alert(`Successful ${codedata.type} code named "${codedata.name}".`);
     } else {
-        alert("NOPE!");
+        $(".keypad").effect("shake");
         updatePasscode("");
     }
     return false;

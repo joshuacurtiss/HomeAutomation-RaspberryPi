@@ -41,6 +41,16 @@ preferences {
     }
 }
 
+mappings {
+  path("/summary") {
+    action: [
+      GET: "summary"
+    ]
+  }
+}
+
+/* App Setup */
+
 def installed() {
 	log.debug "Installed with settings: ${settings}"
 	initialize()
@@ -60,6 +70,26 @@ def initialize() {
     subscribe(intrusionSwitch, "switch", intrusionHandler)
     subscribe(intrusionAlarm, "alarm", intrusionHandler)
 }
+
+/* Web API */
+
+// To ask a device what its attributes or commands are:
+// log.debug it.supportedAttributes
+// log.debug it.supportedCommands
+// log.debug "--------------------------------"
+
+def summary() {
+	def res=[]
+    contact.each {
+    	res << [id: it.id, device:it.name, name: it.displayName, value: it.currentValue("contact"), battery: it.currentValue("battery")]
+    }
+    presence.each {
+    	res << [id: it.id, device:it.name, name: it.displayName, value: it.currentValue("presence"), battery: it.currentValue("battery")]
+    }
+    return res
+}
+
+/* Event Handlers */
 
 def contactHandler(evt) {
     def params = [

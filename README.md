@@ -77,33 +77,28 @@ Other optional equipment you may choose to acquire:
    sudo apt-get upgrade
    ```
 
-4. Install `xscreensaver`. This will be handy to avoid burn-in. Adjust settings as desired once installed.
-
-   ```
-   sudo apt-get install xscreensaver xscreensaver-gl-extra xscreensaver-data-extra
-   ```
-
-5. Install Node.js by following
+4. Install Node.js by following
    [these excellent instructions](http://thisdavej.com/beginners-guide-to-installing-node-js-on-a-raspberry-pi/#install-node)
    by Dave Johnson.
 
-6. Install this home automation app and start it running!
+5. Install this home automation app and start it running!
    ```
    sudo apt-get install screen
    mkdir ~/Documents/node
    cd ~/Documents/node
    git clone https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi.git homeautomation
-   cd homeautomation
-   screen -d -m node server
+   cd homeautomation/rpi
+   npm install
+   screen
+   export DISPLAY=:0.0
+   NODE_ENV=production npm start
    ```
    You'll also want to place sound clips somewhere in your system and create a `production.js` config file
    that reflects the sound clip paths.
 
-   Note that I'm not providing instructions for setting this app up as a service because the development of
-   changing this app from a service to a GUI app that is run at login/startup is currently in process. I will 
-   update these instructions accordingly as I make changes.
+   I will update instructions soon when I hammer out the automation of all of these steps.
 
-7. Configure things on the [SmartThings/dev](http://developer.smartthings.com) site:
+6. Configure things on the [SmartThings/dev](http://developer.smartthings.com) site:
 
    * For intrusion detection, create a virtual switch using the `Simulated Switch` type. Name it something like
      "Intrusion Notifier". When you install Pi Guardian smart app, use this switch under the "Intrusion Detection"
@@ -112,7 +107,7 @@ Other optional equipment you may choose to acquire:
    * Install the Pi Guardian SmartApp on your account and publish it "For Yourself". Then go into the SmartThings 
      app on your mobile device and install and configure Pi Guardian for your home.
    
-8. Enjoy!
+7. Enjoy!
 
 ### Some Additional System Setup (optional) ###
 
@@ -122,6 +117,20 @@ Other optional equipment you may choose to acquire:
   it may appear that the screen displays upside-down. To fix this, add this line to `/boot/config.txt` and reboot:
   ```
   lcd_rotate=2
+  ```
+
+* Hide the mouse pointer 
+
+  It is nice to hide the mouse pointer to give the system more of an appliance feel. To do it, install
+  [Unclutter](https://sourceforge.net/projects/unclutter/) with ```apt-get```:
+  ```
+  sudo apt-get install unclutter
+  ```
+
+* Install `xscreensaver`. This will be handy to avoid burn-in. Adjust settings as desired once installed.
+
+  ```
+  sudo apt-get install xscreensaver xscreensaver-gl-extra xscreensaver-data-extra
   ```
 
 ### Installation of Miscellaneous Niceties ###

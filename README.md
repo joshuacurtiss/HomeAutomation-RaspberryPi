@@ -114,6 +114,16 @@ Other optional equipment you may choose to acquire:
    
 8. Enjoy!
 
+### Some Additional System Setup (optional) ###
+
+* Rotate the screen
+
+  If you're using the [Raspberry Pi touchscreen](https://www.raspberrypi.org/products/raspberry-pi-touch-display),
+  it may appear that the screen displays upside-down. To fix this, add this line to `/boot/config.txt` and reboot:
+  ```
+  lcd_rotate=2
+  ```
+
 ### Installation of Miscellaneous Niceties ###
 
 * Installing Shairport Sync

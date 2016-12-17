@@ -64,7 +64,7 @@ app.post('/api/notification/:type', function (req, res) {
             win.show();
             win.focus();
         });
-        win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device}&style=door`);
+        win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device}&style=contact`);
         chimeThenSpeak(chimes.openclosesensor,data.device);
       } 
     } else if( type=="presence" ) {

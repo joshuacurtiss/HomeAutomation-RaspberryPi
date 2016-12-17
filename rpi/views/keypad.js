@@ -4,7 +4,7 @@ let data=require("../data/data.json");
 let load=require("../js/resourceLoader.js");
 
 load(`../bower_components/font-awesome/css/font-awesome.min.css`);
-load(`../css/keypad.css`);
+load(`keypad.css`);
 
 $(document).ready(function(){
     // Draw the passcode dots

@@ -10,8 +10,8 @@ const DOWFMT="dddd";
 const DATEFMT="MMMM D";
 
 load(`../bower_components/font-awesome/css/font-awesome.min.css`);
-load(`../css/dashboard.css`);
-load(`../css/dashboard-${data.theme}.css`);
+load(`dashboard.css`);
+load(`dashboard-${data.theme}.css`);
 
 $(document).ready(()=>{
     var html="", widgetType={};

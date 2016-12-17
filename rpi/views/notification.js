@@ -4,7 +4,7 @@ const load = require('../js/resourceLoader.js');
 const data = queryString.parse(location.search);
 const delay = data.delay || 9000;
 
-load(`../css/${data.style}.css`);
+load(`notification-${data.style}.css`);
 
 window.onload=function(){
     document.getElementById("msg").innerHTML=data.msg;

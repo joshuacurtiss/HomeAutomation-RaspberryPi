@@ -26,11 +26,12 @@ definition(
 
 
 preferences {
-	section("Notify when doors open:") {
+	section("Control/monitor the following devices:") {
 		input "contact", "capability.contactSensor", title: "Where?", multiple: true, required: false
-	}
-	section("Notify when presence sensors arrive:") {
 		input "presence", "capability.presenceSensor", title: "Which sensor?", multiple: true, required: false
+    	input "switches", "capability.switch", title: "Which switch?", multiple: true, required: false
+        input "bulb", "capability.bulb", title: "Which bulbs?", multiple: true, required: false
+        input "lock", "capability.lock", title: "Which locks?", multiple: true, required: false
 	}
     section("Intrusion detection:") {
     	input "intrusionSwitch", "capability.switch", title: "Which switch?", multiple: true, required: false
@@ -42,9 +43,14 @@ preferences {
 }
 
 mappings {
-  path("/summary") {
+  path("/devices") {
     action: [
-      GET: "summary"
+      GET: "getDeviceStatus"
+    ]
+  }
+  path("/devices/:id") {
+    action: [
+      GET: "getDeviceStatus"
     ]
   }
 }
@@ -63,41 +69,47 @@ def updated() {
 }
 
 def initialize() {
-	log.debug "Subscribe to ${contact} and ${presence}"
-	subscribe(contact, "contact", contactHandler)
-    subscribe(presence, "presence", presenceHandler) 
+	subscribe(contact, "contact", generalDeviceEventHandler)
+    subscribe(presence, "presence", generalDeviceEventHandler) 
+    subscribe(switches, "switch", generalDeviceEventHandler)
+    subscribe(bulb, "bulb", generalDeviceEventHandler)
+    subscribe(lock, "lock", generalDeviceEventHandler)
     subscribe(location, "alarmSystemStatus", alarmStatusHandler)
     subscribe(intrusionSwitch, "switch", intrusionHandler)
     subscribe(intrusionAlarm, "alarm", intrusionHandler)
 }
 
+/* Utility Methods */
+
+def getDeviceProps(device,valueprop="") {
+	return [id:device.id, device:device.name, name:device.displayName, value:device.currentValue(valueprop), battery:device.currentValue("battery")];
+}
+
+def getEventProps(evt) {
+	return [id:evt.id, type:evt.name, value:evt.value, device:getDeviceProps(evt.device,evt.name)]
+}
+
 /* Web API */
 
-// To ask a device what its attributes or commands are:
-// log.debug it.supportedAttributes
-// log.debug it.supportedCommands
-// log.debug "--------------------------------"
-
-def summary() {
+def getDeviceStatus() {
+	def id=params.id
 	def res=[]
-    contact.each {
-    	res << [id: it.id, device:it.name, name: it.displayName, value: it.currentValue("contact"), battery: it.currentValue("battery")]
-    }
-    presence.each {
-    	res << [id: it.id, device:it.name, name: it.displayName, value: it.currentValue("presence"), battery: it.currentValue("battery")]
-    }
-    return res
+    contact.each {if(id==null||id==it.id) res << getDeviceProps(it,"contact")}
+    presence.each {if(id==null||id==it.id) res << getDeviceProps(it,"presence")}
+    switches.each {if(id==null||id==it.id) res << getDeviceProps(it,"switch")}
+    bulb.each {if(id==null||id==it.id) res << getDeviceProps(it,"switch")}
+    lock.each {if(id==null||id==it.id) res << getDeviceProps(it,"lock")}
+	if( id==null ) return res
+    else if( res.length ) return res[0]
+    else return [:]
 }
 
 /* Event Handlers */
 
-def contactHandler(evt) {
-    def params = [
-        uri: "${settings.uri}/notification/openclosesensor",
-        body: [
-            device: evt.displayName,
-            action: evt.value
-        ]
+def generalDeviceEventHandler(evt) {
+	def params = [
+        uri: "${settings.uri}/${evt.name}",
+        body: getEventProps(evt)
     ]
 	try {
     	log.debug "$params.uri $params.body"
@@ -109,41 +121,31 @@ def contactHandler(evt) {
     }
 }
 
-def presenceHandler(evt) {
-	if (evt.value == "present") {
-		def params = [
-        	uri: "${settings.uri}/notification/presence",
-            body: [
-            	device: evt.displayName,
-                action: "arrived"
-            ]
-        ]
-        try {
-            log.debug "$params.uri $params.body"
-            httpPostJson(params) { resp ->
-                log.debug "${resp.status}: ${resp.data}"
-            }
-        } catch (e) {
-            log.debug "something went wrong: $e"
-        }
-	}
-}
-
 def alarmStatusHandler(evt) {
-    try {
-        httpGet("${settings.uri}/notification/shm/${evt.value}") { resp ->
-			log.debug "${resp.status}: ${resp.data}"
-		}
+	def params = [
+    	uri: "${settings.uri}/shm",
+        body: getEventProps(evt)
+    ]
+	try {
+        log.debug "$params.uri $params.body"
+        httpPostJson(params) { resp ->
+            log.debug "${resp.status}: ${resp.data}"
+        }
     } catch (e) {
         log.error "something went wrong: $e"
     }
 }
 
 def intrusionHandler(evt) {
+	def params = [
+    	uri: "${settings.uri}/intrusion",
+        body: getEventProps(evt)
+    ]
     try {
-        httpGet("${settings.uri}/notification/intrusion/${evt.value=='off'?evt.value:'on'}") { resp ->
-			log.debug "${resp.status}: ${resp.data}"
-		}
+        log.debug "$params.uri $params.body"
+        httpPostJson(params) { resp ->
+            log.debug "${resp.status}: ${resp.data}"
+        }
     } catch (e) {
         log.error "something went wrong: $e"
     }

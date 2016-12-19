@@ -16,7 +16,7 @@ load(`dashboard.css`);
 load(`dashboard-${data.theme}.css`);
 
 ipcRenderer.on('device-update', (event, data) => {
-    $(`#${data.device.id} i`).removeClass().addClass(widgetTypes[data.device.device][`icon-${data.value.replace(/\W/,"")}`]);
+    updateDevice(data.device);
 })
 
 $(document).ready(()=>{
@@ -61,20 +61,7 @@ $(document).ready(()=>{
         },
         success: function (data) {
             for( var widget of data ) {
-                if(widget.device && widget.value) {
-                    $(`#${widget.id} i`).removeClass().addClass(widgetTypes[widget.device][`icon-${widget.value.replace(/\W/,"")}`]);
-                    var style=null;
-                    if( widget.battery && widget.battery>80 ) style="4";
-                    else if( widget.battery && widget.battery>60 ) style="3";
-                    else if( widget.battery && widget.battery>40 ) style="2";
-                    else if( widget.battery && widget.battery>20 ) style="1";
-                    else if( widget.battery && widget.battery>=0 ) style="0";
-                    if(style) style="fa fa-battery-"+style;
-                    else style="hidden";
-                    $(`#${widget.id} span`).removeClass().addClass(style);
-                } else {
-                    console.log("Could not act on: "+JSON.stringify(widget));
-                }
+                updateDevice(widget);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -93,4 +80,21 @@ function updateTime()
     $(".widget[data-type=datetime] .comment").html(now.format(DOWFMT));
     var sec=now.seconds();
     setTimeout(updateTime,(60-sec)*1000);
+}
+
+function updateDevice(device) {
+    if(device.device && device.value) {
+        $(`#${device.id} i`).removeClass().addClass(widgetTypes[device.device][`icon-${device.value.replace(/\W/,"")}`]);
+        var style=null;
+        if( device.battery && device.battery>80 ) style="4";
+        else if( device.battery && device.battery>60 ) style="3";
+        else if( device.battery && device.battery>40 ) style="2";
+        else if( device.battery && device.battery>20 ) style="1";
+        else if( device.battery && device.battery>=0 ) style="0";
+        if(style) style="fa fa-battery-"+style;
+        else style="hidden";
+        $(`#${device.id} span`).removeClass().addClass(style);
+    } else {
+        console.log("Could not act on: "+JSON.stringify(device));
+    }
 }

@@ -20,32 +20,25 @@
             "type":"datetime"
         },
         "my-device-id-1": {
-            "type":"Mobile Presence",
-            "title":"Josh"
+            "type":"Mobile Presence"
         },
         "my-device-id-2": {
-            "type":"Mobile Presence",
-            "title":"KD"
+            "type":"Mobile Presence"
         },
         "my-device-id-3": {
-            "type": "Z-Wave Plus Door/Window Sensor",
-            "title": "Front Door"
+            "type": "Z-Wave Plus Door/Window Sensor"
         },
         "my-device-id-4": {
-            "type": "Z-Wave Plus Door/Window Sensor",
-            "title": "Side Door"
+            "type": "Z-Wave Plus Door/Window Sensor"
         },
         "my-device-id-5": {
-            "type":"GE Link Daylight Bulb",
-            "title":"Basement Lamp"
+            "type":"GE Link Daylight Bulb"
         },
         "my-device-id-6": {
-            "type":"Z-Wave Wall Switch",
-            "title":"Bedroom Fan Light"
+            "type":"Z-Wave Wall Switch"
         },
         "my-device-id-7": {
-            "type":"Z-Wave Lock",
-            "title":"Front Deadbolt"
+            "type":"Z-Wave Lock"
         }
     }
 }

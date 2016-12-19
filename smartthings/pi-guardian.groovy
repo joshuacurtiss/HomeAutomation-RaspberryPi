@@ -91,7 +91,7 @@ def getDeviceProps(device,valueprop="") {
 }
 
 def getEventProps(evt) {
-	return [id:evt.id, type:evt.name, value:evt.value, device:getDeviceProps(evt.device,evt.name)]
+	return [id:evt.id.toString(), type:evt.name, value:evt.value, device:getDeviceProps(evt.device,evt.name)]
 }
 
 def findDevice(id) {

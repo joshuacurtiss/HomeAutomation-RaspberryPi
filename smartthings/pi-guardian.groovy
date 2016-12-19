@@ -86,12 +86,22 @@ def getDevices() {
 	return (contact + presence + switches + bulb + lock).findAll()
 }
 
-def getDeviceProps(device,valueprop="") {
-	return [id:device.id, device:device.name, name:device.displayName, value:device.currentValue(valueprop), battery:device.currentValue("battery")];
+def getDeviceProps(device) {
+	def con=device.currentValue("contact")
+    def pres=device.currentValue("presence")
+    def lock=device.currentValue("lock")
+    def sw=device.currentValue("switch")
+	return [
+    	id:device.id, 
+        device:device.name, 
+        name:device.displayName, 
+        value:con?con:(pres?pres:(lock?lock:sw)),
+        battery:device.currentValue("battery")
+    ];
 }
 
 def getEventProps(evt) {
-	return [id:evt.id.toString(), type:evt.name, value:evt.value, device:getDeviceProps(evt.device,evt.name)]
+	return [id:evt.id.toString(), type:evt.name, value:evt.value, device:getDeviceProps(evt.device)]
 }
 
 def findDevice(id) {
@@ -103,11 +113,7 @@ def findDevice(id) {
 def getDeviceStatus() {
 	def id=params.id
 	def res=[]
-    contact.each {if(id==null||id==it.id) res << getDeviceProps(it,"contact")}
-    presence.each {if(id==null||id==it.id) res << getDeviceProps(it,"presence")}
-    switches.each {if(id==null||id==it.id) res << getDeviceProps(it,"switch")}
-    bulb.each {if(id==null||id==it.id) res << getDeviceProps(it,"switch")}
-    lock.each {if(id==null||id==it.id) res << getDeviceProps(it,"lock")}
+    getDevices().each {if(id==null||id==it.id) res << getDeviceProps(it)}
 	if( id==null ) return res
     else if( res.length ) return res[0]
     else return [:]

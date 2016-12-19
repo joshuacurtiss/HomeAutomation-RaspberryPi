@@ -6,48 +6,46 @@
         "2222": {"name":"KD","type":"normal"},
         "9999": {"name":"Duress","type":"duress"}
     },
-    "widgets": [
-        {
+    "smartthings": {
+        "url": "https://your-smartthings-app-url/",
+        "token": "your-smartthings-oauth2-token"
+    },
+    "widgets": {
+        "shm": {
             "type":"shm",
             "title":"Smart Home Monitor",
             "comment":"Armed (away)"
         },
-        {
+        "datetime": {
             "type":"datetime"
         },
-        {
-            "type":"presence",
+        "my-device-id-1": {
+            "type":"Mobile Presence",
             "title":"Josh"
         },
-        {
-            "type":"presence",
+        "my-device-id-2": {
+            "type":"Mobile Presence",
             "title":"KD"
         },
-        {
-            "type":"light",
+        "my-device-id-3": {
+            "type": "Z-Wave Plus Door/Window Sensor",
+            "title": "Front Door"
+        },
+        "my-device-id-4": {
+            "type": "Z-Wave Plus Door/Window Sensor",
+            "title": "Side Door"
+        },
+        "my-device-id-5": {
+            "type":"GE Link Daylight Bulb",
             "title":"Basement Lamp"
         },
-        {
-            "type":"light",
+        "my-device-id-6": {
+            "type":"Z-Wave Wall Switch",
             "title":"Bedroom Fan Light"
         },
-        {
-            "type":"light",
-            "title":"Living Room"
-        },
-        {
-            "type":"light",
-            "title":"Front Porch"
-        },
-        {
-            "type":"lock",
-            "title":"Front Deadbolt",
-            "battery":3
-        },
-        {
-            "type":"lock",
-            "title":"Side Deadbolt",
-            "battery":1
+        "my-device-id-7": {
+            "type":"Z-Wave Lock",
+            "title":"Front Deadbolt"
         }
-    ]
+    }
 }

@@ -18,19 +18,53 @@
             "iconon": "fa fa-fw fa-shield",
             "classes": "maroon x2"
         },
-        "lock": {
-            "iconoff": "fa fa-fw fa-lock dim",
-            "iconon": "fa fa-fw fa-unlock-alt",
+        "Z-Wave Plus Door/Window Sensor": {
+            "icon-closed": "fa fa-fw fa-compress r45 dim",
+            "icon-open": "fa fa-fw fa-expand r45",
+            "classes": "pink x1"
+        },
+        "Contact Sensor Capability": {
+            "icon-closed": "fa fa-fw fa-compress r45 dim",
+            "icon-open": "fa fa-fw fa-expand r45",
+            "classes": "pink x1"
+        },
+        "Z-Wave Lock": {
+            "icon-locked": "fa fa-fw fa-lock dim",
+            "icon-unlocked": "fa fa-fw fa-unlock-alt",
+            "icon-unlockedwithtimeout": "fa fa-fw fa-unlock-alt",
+            "icon-unknown": "fa fa-fw fa-question-circle-o dim",
             "classes": "green x1"
         },
-        "light": {
-            "iconoff": "fa fa-fw fa-lightbulb-o dim",
-            "iconon": "fa fa-fw fa-lightbulb-o",
+        "Lock Capability": {
+            "icon-locked": "fa fa-fw fa-lock dim",
+            "icon-unlocked": "fa fa-fw fa-unlock-alt",
+            "icon-unlockedwithtimeout": "fa fa-fw fa-unlock-alt",
+            "icon-unknown": "fa fa-fw fa-question-circle-o dim",
+            "classes": "green x1"
+        },
+        "Z-Wave Wall Switch": {
+            "icon-off": "fa fa-fw fa-lightbulb-o dim",
+            "icon-on": "fa fa-fw fa-lightbulb-o",
             "classes": "red x1"
         },
-        "presence": {
-            "iconoff": "fa fa-fw fa-map-marker dim",
-            "iconon": "fa fa-fw fa-map-marker",
+        "Switch Capability": {
+            "icon-off": "fa fa-fw fa-lightbulb-o dim",
+            "icon-on": "fa fa-fw fa-lightbulb-o",
+            "classes": "red x1"
+        },
+        "GE Link Daylight Bulb": {
+            "icon-off": "fa fa-fw fa-lightbulb-o dim",
+            "icon-on": "fa fa-fw fa-lightbulb-o",
+            "classes": "red x1"
+        },
+        "Mobile Presence": {
+            "icon-notpresent": "fa fa-fw fa-map-marker dim",
+            "icon-present": "fa fa-fw fa-map-marker",
+            "classes": "blue x1"
+        },
+        "Presence Sensor Capability": {
+            "icon-notpresent": "fa fa-fw fa-map-marker dim",
+            "icon-present": "fa fa-fw fa-map-marker",
             "classes": "blue x1"
         }
     }

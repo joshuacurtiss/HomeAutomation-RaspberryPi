@@ -10,13 +10,16 @@ var app = express()
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-var port=config.get("port");
-var chimes=config.get("chimes");
+const port=config.get("port");
+const chimes=config.get("chimes");
 const q='"';
 
+var dashboardWin;
+
 electron.app.on("ready", () => {
-    let win=new electron.BrowserWindow(config.get("startWindowOptions"));
-    win.loadURL(`file://${__dirname}${config.get("startWindowFile")}`);
+    dashboardWin=new electron.BrowserWindow(config.get("startWindowOptions"));
+    dashboardWin.loadURL(`file://${__dirname}${config.get("startWindowFile")}`);
+    dashboardWin.webContents.openDevTools();
 });
 
 app.use(function(req,res,next){
@@ -62,6 +65,7 @@ app.post('/api/:type', function (req, res) {
   var type=req.params.type;
   try {
     var data=req.body;
+    dashboardWin.webContents.send('device-update', data);
     if( type=="contact" ) {
       // TODO: May still have to call `xscreensaver-command -deactivate`?
       if( data.action=="open" ) // "open" or "closed"

@@ -48,9 +48,12 @@ html, body {
     margin-top: 87px;
     margin-left: 3px;
 }
+.hidden {display:none;}
 .dim {opacity: 0.5; text-shadow: 2px 2px 10px gray;}
+.r45 {transform: rotate(45deg);}
 .red {background-color: red;}
 .maroon {background-color: maroon;}
 .green {background-color: green;}
 .blue {background-color: darkblue;}
 .gray {background-color: darkslategray;}
+.pink {background-color: hotpink;}

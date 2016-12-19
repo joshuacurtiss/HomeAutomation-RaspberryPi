@@ -38,23 +38,31 @@ app.post('/api/message', function (req, res) {
   res.send('Thanks for your message! ' + req.body);
 })
 
-app.get('/api/notification/shm/:mode', function (req, res) {
+app.post('/api/shm', function (req, res) {
+  var data=req.body;
+  /*
   var mode=req.params.mode;
   console.log("Smart Home Monitor set to "+mode+".");
   res.send("Smart Home Monitor: "+mode+".");
+  */
+  res.send("Smart Home Monitor: "+JSON.stringify(data));
 })
 
-app.get('/api/notification/intrusion/:mode', function (req, res) {
+app.post('/api/intrusion', function (req, res) {
+  var data=req.body;
+  /*
   var mode=req.params.mode;
   console.log("Intrusion status is "+mode+".");
   res.send("Intrusion status: "+mode+".");
+  */
+  res.send("Intrusion status: "+JSON.stringify(data));
 })
 
-app.post('/api/notification/:type', function (req, res) {
+app.post('/api/:type', function (req, res) {
   var type=req.params.type;
   try {
     var data=req.body;
-    if( type=="openclosesensor" ) {
+    if( type=="contact" ) {
       // TODO: May still have to call `xscreensaver-command -deactivate`?
       if( data.action=="open" ) // "open" or "closed"
       {

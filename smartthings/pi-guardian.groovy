@@ -50,7 +50,8 @@ mappings {
   }
   path("/devices/:id") {
     action: [
-      GET: "getDeviceStatus"
+      GET: "getDeviceStatus",
+      POST: "setDeviceStatus"
     ]
   }
 }
@@ -81,12 +82,20 @@ def initialize() {
 
 /* Utility Methods */
 
+def getDevices() {
+	return (contact + presence + switches + bulb + lock).findAll()
+}
+
 def getDeviceProps(device,valueprop="") {
 	return [id:device.id, device:device.name, name:device.displayName, value:device.currentValue(valueprop), battery:device.currentValue("battery")];
 }
 
 def getEventProps(evt) {
 	return [id:evt.id, type:evt.name, value:evt.value, device:getDeviceProps(evt.device,evt.name)]
+}
+
+def findDevice(id) {
+	return getDevices().findAll{it.id==id}[0]
 }
 
 /* Web API */
@@ -102,6 +111,13 @@ def getDeviceStatus() {
 	if( id==null ) return res
     else if( res.length ) return res[0]
     else return [:]
+}
+
+def setDeviceStatus() {
+	def id=params.id
+    def action=request.JSON?.action
+    def device=findDevice(id)
+    device."$action"()
 }
 
 /* Event Handlers */

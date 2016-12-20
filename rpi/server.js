@@ -38,7 +38,7 @@ app.post('/api/message', function (req, res) {
     chimeThenSpeak(chimes.message,data.message.slice(6));
   }
   catch(err){console.log("Error. "+err)}
-  res.send('Thanks for your message! ' + req.body);
+  res.send('Thanks for your message! ' + JSON.stringify(req.body));
 })
 
 app.post('/api/shm', function (req, res) {
@@ -66,27 +66,24 @@ app.post('/api/:type', function (req, res) {
   try {
     var data=req.body;
     dashboardWin.webContents.send('device-update', data);
-    if( type=="contact" ) {
+    if( type=="contact" && data.value=="open" ) {
       // TODO: May still have to call `xscreensaver-command -deactivate`?
-      if( data.action=="open" ) // "open" or "closed"
-      {
-        let win=new electron.BrowserWindow({width:800, height:480, show:false});
-        win.on('ready-to-show', function() {
-            win.setFullScreen(true);
-            win.show();
-            win.focus();
-        });
-        win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device}&style=contact`);
-        chimeThenSpeak(chimes.openclosesensor,data.device);
-      } 
-    } else if( type=="presence" ) {
-      chimeThenSpeak(chimes.presence,data.device+" has "+data.action);
+      let win=new electron.BrowserWindow({width:800, height:480, show:false});
+      win.on('ready-to-show', function() {
+          win.setFullScreen(true);
+          win.show();
+          win.focus();
+      });
+      win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device.name}&style=contact`);
+      chimeThenSpeak(chimes.openclosesensor,data.device.name);
+    } else if( type=="presence" && data.value=="present" ) {
+      chimeThenSpeak(chimes.presence,data.device.name+" has arrived");
     } else if( type=="test" ) {
-      chimeThenSpeak(chimes.openclosesensor,data.device);
+      chimeThenSpeak(chimes.openclosesensor,data.device.name);
     }
   }
   catch(err){console.log("Error. "+err)}
-  res.send('Notification: ' + type + " " + req.body);
+  res.send('Notification: ' + type + " " + JSON.stringify(req.body));
 })
 
 app.listen(port, function () {

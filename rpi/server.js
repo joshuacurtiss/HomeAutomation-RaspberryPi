@@ -19,7 +19,7 @@ var dashboardWin;
 electron.app.on("ready", () => {
     dashboardWin=new electron.BrowserWindow(config.get("startWindowOptions"));
     dashboardWin.loadURL(`file://${__dirname}${config.get("startWindowFile")}`);
-    dashboardWin.webContents.openDevTools();
+    if(config.get("startWindowDevTools")) dashboardWin.webContents.openDevTools();
 });
 
 app.use(function(req,res,next){

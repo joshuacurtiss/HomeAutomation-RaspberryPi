@@ -52,8 +52,13 @@ $(document).ready(()=>{
             $(".dashboard").append(html);
         }
     }
+    refresh();
     updateTime();
+    setInterval(refresh,config.get("refreshInterval"));
     $(".dashboard .widget").click(clickDevice);
+});
+
+function refresh() {
     $.ajax({
         url: data.smartthings.url+"devices",
         type: "GET",
@@ -75,7 +80,7 @@ $(document).ready(()=>{
     }).fail(function () {
         alert("Failed to load initial data.")
     });
-});
+}
 
 function updateTime()
 {

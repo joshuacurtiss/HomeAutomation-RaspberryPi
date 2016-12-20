@@ -54,6 +54,12 @@ mappings {
       POST: "setDeviceStatus"
     ]
   }
+  path("/shm") {
+    action: [
+      GET: "getAlarmSystemStatus",
+      POST: "setAlarmSystemStatus"
+    ]
+  }
 }
 
 /* App Setup */
@@ -100,6 +106,10 @@ def getDeviceProps(device) {
     ];
 }
 
+def getAlarmSystemStatusProps(shm) {
+	return [id:shm.locationId.toString()+"-"+shm.name,value:shm.value,device:shm.name,name:shm.displayName,battery:null]
+}
+
 def getEventProps(evt) {
 	return [id:evt.id.toString(), type:evt.name, value:evt.value, device:evt.device?getDeviceProps(evt.device):null]
 }
@@ -114,6 +124,8 @@ def getDeviceStatus() {
 	def id=params.id
 	def res=[]
     getDevices().each {if(id==null||id==it.id) res << getDeviceProps(it)}
+    // If asking for all devices, also include the SHM
+    if( id==null ) res << getAlarmSystemStatus()
 	if( id==null ) return res
     else if( res.length ) return res[0]
     else return [:]
@@ -124,6 +136,17 @@ def setDeviceStatus() {
     def action=request.JSON?.action
     def device=findDevice(id)
     device."$action"()
+}
+
+def getAlarmSystemStatus() {
+    def shm=location.currentState("alarmSystemStatus")
+    if( shm ) return getAlarmSystemStatusProps(shm)
+}
+
+def setAlarmSystemStatus(mode) {
+	if(!mode) mode=request.JSON?.value
+    if( mode=="off" || mode=="away" || mode=="stay" )
+		sendLocationEvent(name:"alarmSystemStatus", value:mode)
 }
 
 /* Event Handlers */
@@ -146,7 +169,7 @@ def generalDeviceEventHandler(evt) {
 def alarmStatusHandler(evt) {
 	def params = [
     	uri: "${settings.uri}/shm",
-        body: getEventProps(evt)
+        body: getAlarmSystemStatus()
     ]
 	try {
         log.debug "$params.uri $params.body"

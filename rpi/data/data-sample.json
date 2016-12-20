@@ -11,7 +11,7 @@
         "token": "your-smartthings-oauth2-token"
     },
     "widgets": {
-        "shm": {
+        "my-location-uuid-alarmSystemStatus": {
             "type":"alarmSystemStatus",
             "title":"Smart Home Monitor"
         },

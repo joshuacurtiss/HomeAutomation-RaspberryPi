@@ -65,7 +65,8 @@ $(document).ready(()=>{
         },
         success: function (data) {
             for( var widget of data ) {
-                updateDevice(widget);
+                if( widget.device=="alarmSystemStatus" ) updateSHM(widget);
+                else updateDevice(widget);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -88,12 +89,9 @@ function updateTime()
 }
 
 function updateSHM(data) {
-    updateDevice({
-      id:"shm",
-      device:data.type,
-      value:data.value,
-      comment:data.value=="off"?"Disarmed":`Armed (${data.value})`
-    });
+    data.comment=data.value=="off"?"Disarmed":`Armed (${data.value})`;
+    delete data.name;
+    updateDevice(data);
 }
 
 function updateDevice(device) {

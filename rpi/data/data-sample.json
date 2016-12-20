@@ -12,9 +12,8 @@
     },
     "widgets": {
         "shm": {
-            "type":"shm",
-            "title":"Smart Home Monitor",
-            "comment":"Armed (away)"
+            "type":"alarmSystemStatus",
+            "title":"Smart Home Monitor"
         },
         "datetime": {
             "type":"datetime"

@@ -13,9 +13,10 @@
         "datetime": {
             "classes": "gray x2"
         },
-        "shm": {
-            "iconoff": "fa fa-fw fa-shield dim",
-            "iconon": "fa fa-fw fa-shield",
+        "alarmSystemStatus": {
+            "icon-off": "fa fa-fw fa-shield dim",
+            "icon-stay": "fa fa-fw fa-shield",
+            "icon-away": "fa fa-fw fa-shield",
             "classes": "maroon x2"
         },
         "Z-Wave Plus Door/Window Sensor": {

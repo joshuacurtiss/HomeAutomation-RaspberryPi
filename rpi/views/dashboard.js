@@ -18,6 +18,9 @@ load(`dashboard-${data.theme}.css`);
 ipcRenderer.on('device-update', (event, data) => {
     updateDevice(data.device);
 })
+ipcRenderer.on('shm-update', (event, data) => {
+    updateSHM(data);
+})
 
 $(document).ready(()=>{
     var html="", widgetType={}, widget={};
@@ -84,11 +87,21 @@ function updateTime()
     setTimeout(updateTime,(60-sec)*1000);
 }
 
+function updateSHM(data) {
+    updateDevice({
+      id:"shm",
+      device:data.type,
+      value:data.value,
+      comment:data.value=="off"?"Disarmed":`Armed (${data.value})`
+    });
+}
+
 function updateDevice(device) {
     if(device.device && device.value) {
         $(`#${device.id}`)
             .attr("data-value",device.value)
             .find("h1").html(device.name).end()
+            .find(".comment").html(device.comment || "").end()
             .find("i").removeClass().addClass(widgetTypes[device.device][`icon-${device.value.replace(/\W/,"")}`]).end();
         var style=null;
         if( device.battery && device.battery>80 ) style="4";

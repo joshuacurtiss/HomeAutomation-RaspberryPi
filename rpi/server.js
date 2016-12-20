@@ -43,22 +43,17 @@ app.post('/api/message', function (req, res) {
 
 app.post('/api/shm', function (req, res) {
   var data=req.body;
-  /*
-  var mode=req.params.mode;
+  var mode=data.value; // "off", "stay", "away"
+  dashboardWin.webContents.send('shm-update', data);
   console.log("Smart Home Monitor set to "+mode+".");
   res.send("Smart Home Monitor: "+mode+".");
-  */
-  res.send("Smart Home Monitor: "+JSON.stringify(data));
 })
 
 app.post('/api/intrusion', function (req, res) {
   var data=req.body;
-  /*
-  var mode=req.params.mode;
+  var mode=data.value
   console.log("Intrusion status is "+mode+".");
   res.send("Intrusion status: "+mode+".");
-  */
-  res.send("Intrusion status: "+JSON.stringify(data));
 })
 
 app.post('/api/:type', function (req, res) {

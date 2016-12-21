@@ -1,11 +1,12 @@
 {
   "name": "homeautomation",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "App for handling home automation with the Raspberry Pi.",
   "main": "server.js",
   "scripts": {
     "start": "electron server.js",
-    "build": "electron-packager . PiGuardian --ignore=node_modules/electron-* --out=dist --asar --overwrite",
+    "build-osx": "electron-packager . PiGuardian --platform=darwin --ignore=node_modules/electron-* --out=dist --icon '../logo/logo.icns' --asar --overwrite",
+    "build-linux": "electron-packager . PiGuardian --platform=linux --ignore=node_modules/electron-* --out=dist --icon '../logo/logo.ico' --asar --overwrite",
     "postinstall": "node_modules/bower/bin/bower install -F"
   },
   "author": "Josh Curtiss <josh@curtiss.me>",

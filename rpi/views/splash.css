@@ -1,0 +1,12 @@
+.splash {
+    text-align:center;
+    height: 99vh;
+}
+.splash h1 {
+    color: #e89d31;
+    margin: 0;
+}
+.splash img {
+    height: 25vh;
+    margin-top: 37vh;
+}

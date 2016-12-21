@@ -1,13 +1,18 @@
-const queryString = require('query-string');
-const jQuery=$=require("../bower_components/jquery/dist/jquery.min.js");
-const load = require('../js/resourceLoader.js');
-const data = queryString.parse(location.search);
-const delay = data.delay || 9000;
+const NOTIFICATIONDELAY=9999;
 
-load(`notification-${data.style}.css`);
+load(`notification-contact.css`);
 
-window.onload=function(){
-    document.getElementById("msg").innerHTML=data.msg;
-    //document.getElementById("debug").innerHTML=JSON.stringify(data);
-    setTimeout(()=>{this.close()},delay);
-};
+ipcRenderer.on('notification', (event, data) => {
+    activateNotification(data.type,data.msg);
+})
+
+function activateNotification(type,msg) {
+    $(`.notification.${type}`)
+        .find(".msg").html(msg).end()
+        .removeClass("hidden").animateCss("fadeInUpBig");
+    setTimeout(function(){
+        $(`.notification.${type}`).animateCss("fadeOutDownBig",function(){
+            $(`.notification.${type}`).addClass("hidden");
+        })
+    },NOTIFICATIONDELAY);
+}

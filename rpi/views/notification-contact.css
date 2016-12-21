@@ -1,15 +1,17 @@
-body 
+.notification.contact
 {
     background-image: url(../img/door.jpg);
     background-size: cover;
-    font-family: sans-serif; 
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
 }
-#msg 
+.notification .msg 
 {
-    font-size: 36px; 
+    font-size: 9vh; 
     position:absolute;
-    top: 30%; 
-    left: 4%; 
-    right: 50%;
+    top: 30vh; 
+    left: 1vw; 
+    right: 44vw;
     text-align: center;
 }

@@ -1,19 +1,11 @@
-let jQuery=$=require("../bower_components/jquery/dist/jquery.min.js");
-let config=require("config");
-let data=require("../data/data.json");
 let widgetTypes=config.get("widgetTypes");
 let moment=require("moment");
-let load=require("../js/resourceLoader.js");
-let electron=require("electron");
-let ipcRenderer=electron.ipcRenderer;
 
 const TIMEFMT="h:mm A";
 const DOWFMT="dddd";
 const DATEFMT="MMMM D";
 
-load(`../bower_components/font-awesome/css/font-awesome.min.css`);
 load(`dashboard.css`);
-load(`dashboard-${data.theme}.css`);
 
 ipcRenderer.on('device-update', (event, data) => {
     updateDevice(data.device);
@@ -22,7 +14,7 @@ ipcRenderer.on('shm-update', (event, data) => {
     updateSHM(data);
 })
 
-$(document).ready(()=>{
+function initDashboard(cb){
     var html="", widgetType={}, widget={};
     for( var widgetid in data.widgets )
     {
@@ -52,13 +44,22 @@ $(document).ready(()=>{
             $(".dashboard").append(html);
         }
     }
-    refresh();
-    updateTime();
-    setInterval(refresh,config.get("refreshInterval"));
+    updateTimeWidget();
+    refreshDashboard(cb);
+    setInterval(refreshDashboard,config.get("refreshInterval"));
     $(".dashboard .widget").click(clickDevice);
-});
+}
 
-function refresh() {
+function revealDashboard(cb) {
+    $(".dashboard")
+        .find(".widget").each((index,elem)=>{
+            $(elem).addClass("hidden");
+            setTimeout(`$("#${elem.id}").removeClass("hidden").animateCss("bounceInRight")`,index*80);
+        }).end()
+        .removeClass("hidden");
+}
+
+function refreshDashboard(cb) {
     $.ajax({
         url: data.smartthings.url+"devices",
         type: "GET",
@@ -73,6 +74,7 @@ function refresh() {
                 if( widget.device=="alarmSystemStatus" ) updateSHM(widget);
                 else updateDevice(widget);
             }
+            if(cb)cb();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert("Received error loading initial data.")
@@ -82,7 +84,7 @@ function refresh() {
     });
 }
 
-function updateTime()
+function updateTimeWidget()
 {
     var now=moment();
     $(".widget[data-type=datetime]")
@@ -90,7 +92,7 @@ function updateTime()
         .find(".time").html(now.format(TIMEFMT)).end()
         .find(".comment").html(now.format(DOWFMT)).end();
     var sec=now.seconds();
-    setTimeout(updateTime,(60-sec)*1000);
+    setTimeout(updateTimeWidget,(60-sec)*1000);
 }
 
 function updateSHM(data) {
@@ -128,6 +130,7 @@ function clickDevice() {
     var postData=JSON.stringify({action:action});
     console.log(`${type} "${id}" is "${curval}". ${action?`Performing "${action}"`:"Nothing to do"}.`);
     if(action) {
+        $(this).animateCss("pulse");
         $.ajax({
             url: data.smartthings.url+"devices/"+id,
             type: "POST",

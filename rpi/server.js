@@ -14,12 +14,12 @@ const port=config.get("port");
 const chimes=config.get("chimes");
 const q='"';
 
-var dashboardWin;
+var win;
 
 electron.app.on("ready", () => {
-    dashboardWin=new electron.BrowserWindow(config.get("startWindowOptions"));
-    dashboardWin.loadURL(`file://${__dirname}${config.get("startWindowFile")}`);
-    if(config.get("startWindowDevTools")) dashboardWin.webContents.openDevTools();
+    win=new electron.BrowserWindow(config.get("startWindowOptions"));
+    win.loadURL(`file://${__dirname}${config.get("startWindowFile")}`);
+    if(config.get("startWindowDevTools")) win.webContents.openDevTools();
 });
 
 app.use(function(req,res,next){
@@ -44,7 +44,7 @@ app.post('/api/message', function (req, res) {
 app.post('/api/shm', function (req, res) {
   var data=req.body;
   var mode=data.value; // "off", "stay", "away"
-  dashboardWin.webContents.send('shm-update', data);
+  win.webContents.send('shm-update', data);
   console.log("Smart Home Monitor set to "+mode+".");
   res.send("Smart Home Monitor: "+mode+".");
 })
@@ -60,16 +60,10 @@ app.post('/api/:type', function (req, res) {
   var type=req.params.type;
   try {
     var data=req.body;
-    dashboardWin.webContents.send('device-update', data);
+    win.webContents.send('device-update', data);
     if( type=="contact" && data.value=="open" ) {
       // TODO: May still have to call `xscreensaver-command -deactivate`?
-      let win=new electron.BrowserWindow({width:800, height:480, show:false});
-      win.on('ready-to-show', function() {
-          win.setFullScreen(true);
-          win.show();
-          win.focus();
-      });
-      win.loadURL(`file://${__dirname}/views/notification.html?msg=${data.device.name}&style=contact`);
+      win.webContents.send('notification', {type:"contact",msg:data.device.name});
       chimeThenSpeak(chimes.openclosesensor,data.device.name);
     } else if( type=="presence" && data.value=="present" ) {
       chimeThenSpeak(chimes.presence,data.device.name+" has arrived");

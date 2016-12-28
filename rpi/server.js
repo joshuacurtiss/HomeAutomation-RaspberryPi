@@ -1,9 +1,6 @@
 const electron = require("electron");
-var fs = require('fs');
-var request = require('request');
-var player = require('play-sound')(opts={});
 var config = require("config");
-var exec = require("child_process").exec;
+//var exec = require("child_process").exec;
 var express = require('express')
 var app = express()
 
@@ -11,7 +8,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 const port=config.get("port");
-const chimes=config.get("chimes");
+const widgetTypes=config.get("widgetTypes");
 const q='"';
 
 var win;
@@ -35,7 +32,10 @@ app.get('/', function (req, res) {
 app.post('/api/message', function (req, res) {
   try {
     var data=req.body;
-    chimeThenSpeak(chimes.message,data.message.slice(6));
+    win.webContents.send('notification', {
+      chime:widgetTypes.message.chime || null,
+      speak:data.message.slice(6)
+    });
   }
   catch(err){console.log("Error. "+err)}
   res.send('Thanks for your message! ' + JSON.stringify(req.body));
@@ -63,12 +63,22 @@ app.post('/api/:type', function (req, res) {
     win.webContents.send('device-update', data);
     if( type=="contact" && data.value=="open" ) {
       // TODO: May still have to call `xscreensaver-command -deactivate`?
-      win.webContents.send('notification', {type:"contact",msg:data.device.name});
-      chimeThenSpeak(chimes.openclosesensor,data.device.name);
+      win.webContents.send('notification', {
+        screen:data.type,
+        msg:data.device.name,
+        chime:widgetTypes[data.device.device][`chime-${data.value}`] || null,
+        speak:data.device.name
+      });
     } else if( type=="presence" && data.value=="present" ) {
-      chimeThenSpeak(chimes.presence,data.device.name+" has arrived");
+      win.webContents.send('notification', {
+        chime:widgetTypes[data.device.device][`chime-${data.value}`] || null,
+        speak:`${data.device.name} has arrived`
+      });
     } else if( type=="test" ) {
-      chimeThenSpeak(chimes.openclosesensor,data.device.name);
+      win.webContents.send('notification', {
+        chime:widgetTypes[data.device.device][`chime-${data.value}`] || null,
+        speak:`${data.device.name} is a test`
+      });
     }
   }
   catch(err){console.log("Error. "+err)}
@@ -78,32 +88,3 @@ app.post('/api/:type', function (req, res) {
 app.listen(port, function () {
   console.log('Listening on port '+port+'!')
 })
-
-function chimeThenSpeak(chime,txt)
-{
-  console.log("Play chime "+chime);
-  player.play(chime,function(err){speak(txt)});
-}
-
-/***** SPEECH *****/
-
-function downloadSpeech(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    console.log("Downloading "+res.headers['content-type']+" with length "+res.headers['content-length']+".");
-    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-  });
-};
-
-function speak(txt)
-{
-  var ttsUrl=config.get("ttsUrl");
-  var ttsCache=config.get("ttsCache");
-  txt=txt.trim();
-  console.log('Speak: '+q+txt+q);
-  var filename=txt.toLowerCase().replace(/\W/g,"")+".mpg";
-  var path=ttsCache+"/"+filename;
-  fs.access(path, function(err){
-    if(err) downloadSpeech(ttsUrl+txt, path, function(){player.play(path)});
-    else player.play(path);
-  });
-}

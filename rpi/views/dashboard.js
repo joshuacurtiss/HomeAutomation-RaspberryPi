@@ -5,13 +5,17 @@ const TIMEFMT="h:mm A";
 const DOWFMT="dddd";
 const DATEFMT="MMMM D";
 
+var dashboardHistory=[];
+
 load(`dashboard.css`);
 
 ipcRenderer.on('device-update', (event, data) => {
     updateDevice(data.device);
+    logEvent(data);
 })
 ipcRenderer.on('shm-update', (event, data) => {
     updateSHM(data);
+    logEvent(data);
 })
 
 function initDashboard(cb){
@@ -144,4 +148,9 @@ function clickDevice() {
             }
         });
     }
+}
+
+function logEvent(data) {
+    data.dt=new Date();
+    dashboardHistory.push(data);
 }

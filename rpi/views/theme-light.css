@@ -4,3 +4,18 @@ html, body {
 .widget {
     box-shadow: 3px 3px 5px #ccc;
 }
+.controlboard {
+    background: #eee;
+    border-top: 1px solid #ccc;
+    color: #444;
+}
+.controlboard i {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+}
+.controlboard i:hover {
+    background-color: #ddd;
+}
+.controlboard i:active {
+    background-color: #e3e3e3;
+}

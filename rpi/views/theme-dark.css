@@ -1,3 +1,18 @@
 html, body {
     background-color: #111;
 }
+.controlboard {
+    background: #333;
+    border-top: 1px solid #444;
+    color: white;
+}
+.controlboard i {
+    background-color: #444;
+    border: 1px solid #484848;
+}
+.controlboard i:hover {
+    background-color: #666;
+}
+.controlboard i:active {
+    background-color: #888;
+}

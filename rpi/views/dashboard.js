@@ -61,6 +61,7 @@ function revealDashboard(cb) {
             setTimeout(`$("#${elem.id}").removeClass("hidden").animateCss("bounceInRight")`,index*80);
         }).end()
         .removeClass("hidden");
+    $(".controlboard").removeClass("hidden").animateCss("slideInUp");
 }
 
 function refreshDashboard(cb) {
@@ -149,6 +150,22 @@ function clickDevice() {
         });
     }
 }
+
+/* Control Board */
+
+$("#btnQuit").click(()=>{
+    main.quit();
+});
+
+$("#btnSettings").click(()=>{
+    alert("Not implemented yet!")
+});
+
+$("#btnWidgetMgmt").click(()=>{
+    alert("Not implemented yet!")
+});
+
+/* Events */
 
 function logEvent(data) {
     data.dt=new Date();

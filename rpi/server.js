@@ -88,3 +88,7 @@ app.post('/api/:type', function (req, res) {
 app.listen(port, function () {
   console.log('Listening on port '+port+'!')
 })
+
+exports.quit=()=>{
+    electron.app.quit();
+}

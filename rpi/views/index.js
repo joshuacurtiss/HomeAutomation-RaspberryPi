@@ -12,7 +12,8 @@ load(`../bower_components/font-awesome/css/font-awesome.min.css`);
 require("../bower_components/jquery-ui/jquery-ui.min.js");
 
 // Electron integration 
-let electron=require("electron");
+const electron=require("electron");
+const main=electron.remote.require("./server.js");
 let ipcRenderer=electron.ipcRenderer;
 
 // Main theming

@@ -1,3 +1,4 @@
+/* Dashboard (where widgets appear) */
 .dashboard {
     height: 100%;
 }
@@ -42,4 +43,30 @@
     font-size: 10px;
     margin-top: 87px;
     margin-left: 3px;
+}
+
+/* Control Board (where user controls stuff) */
+.controlboard {
+    overflow: hidden;
+    position: absolute;
+    text-align: right;
+    line-height: 9vh;
+    height: 9vh;
+    width: 100vw;
+    bottom: 0;
+}
+.controlboard.hidden {
+    bottom: -10vh;
+}
+.controlboard .logo {
+    height: 6vh;
+    position: absolute;
+    margin-top: 1.5vh;
+    left: 2vw;
+}
+.controlboard i {
+    margin-right: 2.5vw;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
 }

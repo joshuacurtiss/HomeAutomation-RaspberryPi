@@ -1,9 +1,5 @@
 const NOTIFICATIONDELAY=9999;
 
-require(`howler`);
-const fs=require(`fs`);
-const request=require(`request`);
-
 load(`notification-contact.css`);
 
 ipcRenderer.on('notification', (event, data) => {

@@ -1,6 +1,3 @@
-let widgetTypes=config.get("widgetTypes");
-let moment=require("moment");
-
 const TIMEFMT="h:mm A";
 const DOWFMT="dddd";
 const DATEFMT="MMMM D";
@@ -26,6 +23,8 @@ function initDashboard(cb){
         widgetType=widgetTypes[widget.type];
         if( widgetType )
         {
+            // Special handling for SHM:
+            if( widget.type=="alarmSystemStatus" ) widget.title="Smart Home Monitor";
             // Special handling for datetime:
             if( widget.type=="datetime" )
             {
@@ -173,6 +172,7 @@ $("#btnWidgetMgmt").click((e)=>{
         btn.blur().removeClass("active");
         $(".dashboard").sortable("disable")
             .find(".widget").removeClass("jiggle");
+        saveDashboard();
     } else {
         console.log("Activating widget management.");
         btn.addClass("active");
@@ -180,6 +180,15 @@ $("#btnWidgetMgmt").click((e)=>{
             .find(".widget").addClass("jiggle");
     }
 });
+
+function saveDashboard() {
+    var widgets={};
+    $(".dashboard .widget").each((idx,data)=>{
+        widgets[data.id]={type:$(data).attr("data-type")};
+    });
+    data.widgets=widgets;
+    fs.writeFile(`${__dirname}/../data/data.json`,JSON.stringify(data),`utf8`);
+}
 
 /* Events */
 

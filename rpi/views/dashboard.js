@@ -29,21 +29,21 @@ function initDashboard(cb){
             // Special handling for datetime:
             if( widget.type=="datetime" )
             {
-                html=`<div id="${widgetid}" data-type="${widget.type}" data-value="" class="widget ${widgetType.classes || ''}">` +
+                html=`<li id="${widgetid}" data-type="${widget.type}" data-value="" class="widget ${widgetType.classes || ''}">` +
                      `<h1></h1>` +
                      `<div class="comment"></div>`+
                      `<div class="time"></div>`+
-                     `</div>`;
+                     `</li>`;
              }
             // Everything else:
             else
             {
-                html=`<div id="${widgetid}" data-type="${widget.type}" data-value="" class="widget ${widgetType.classes || ''}">` +
+                html=`<li id="${widgetid}" data-type="${widget.type}" data-value="" class="widget ${widgetType.classes || ''}">` +
                      `<h1>${widget.title || ""}</h1>` +
                      `<div class="comment">${widget.comment || ""}</div>` +
                      `<i></i>` +
                      `<span class="hidden"></span>` +
-                     `</div>`;
+                     `</li>`;
             }
             $(".dashboard").append(html);
         }
@@ -129,25 +129,30 @@ function updateDevice(device) {
 
 function clickDevice() {
     var id=this.id;
-    var curval=$(this).attr("data-value");
     var type=$(this).attr("data-type");
-    var action=widgetTypes[type].actions?widgetTypes[type].actions[curval]:null;
-    var postData=JSON.stringify({action:action});
-    console.log(`${type} "${id}" is "${curval}". ${action?`Performing "${action}"`:"Nothing to do"}.`);
-    if(action) {
-        $(this).animateCss("pulse");
-        $.ajax({
-            url: data.smartthings.url+"devices/"+id,
-            type: "POST",
-            data: postData,
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            cache: false,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Bearer " + data.smartthings.token);
-            }
-        });
+    var jiggling=$(this).hasClass("jiggle");
+    if( jiggling ) {
+        console.log(`${type} "${id}" is jiggling, so no action will be performed.`);
+    } else {
+        var curval=$(this).attr("data-value");
+        var action=widgetTypes[type].actions?widgetTypes[type].actions[curval]:null;
+        var postData=JSON.stringify({action:action});
+        console.log(`${type} "${id}" is "${curval}". ${action?`Performing "${action}"`:"Nothing to do"}.`);
+        if(action) {
+            $(this).animateCss("pulse");
+            $.ajax({
+                url: data.smartthings.url+"devices/"+id,
+                type: "POST",
+                data: postData,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                cache: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + data.smartthings.token);
+                }
+            });
+        }
     }
 }
 
@@ -161,8 +166,19 @@ $("#btnSettings").click(()=>{
     alert("Not implemented yet!")
 });
 
-$("#btnWidgetMgmt").click(()=>{
-    alert("Not implemented yet!")
+$("#btnWidgetMgmt").click((e)=>{
+    var btn=$(e.target);
+    if( btn.hasClass("active") ) {
+        console.log("Deactivating widget management.");
+        btn.blur().removeClass("active");
+        $(".dashboard").sortable("disable")
+            .find(".widget").removeClass("jiggle");
+    } else {
+        console.log("Activating widget management.");
+        btn.addClass("active");
+        $(".dashboard").sortable().sortable("enable").disableSelection()
+            .find(".widget").addClass("jiggle");
+    }
 });
 
 /* Events */

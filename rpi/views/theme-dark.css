@@ -10,7 +10,7 @@ html, body {
     background-color: #444;
     border: 1px solid #484848;
 }
-.controlboard i:hover {
+.controlboard i:hover, .controlboard i.active {
     background-color: #666;
 }
 .controlboard i:active {

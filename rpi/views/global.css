@@ -14,3 +14,12 @@ html, body {
 .blue {background-color: darkblue;}
 .gray {background-color: darkslategray;}
 .pink {background-color: hotpink;}
+
+/* Jiggle */
+@keyframes jiggle {
+    0% {transform: rotate(-0.75deg);}
+    50% {transform: rotate(0.75deg);}
+}
+.jiggle {
+    animation: jiggle 0.2s infinite;
+}

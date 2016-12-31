@@ -5,11 +5,12 @@ let data=require("../data/data.json");
 // Global libraries and assets
 let jQuery=$=require("../bower_components/jquery/dist/jquery.min.js");
 let load=require("../js/resourceLoader.js");
-load("../js/jquery.animateCss.js");
 load(`global.css`);
+load(`../js/jquery.animateCss.js`);
 load(`../bower_components/animate.css/animate.min.css`);
 load(`../bower_components/font-awesome/css/font-awesome.min.css`);
-require("../bower_components/jquery-ui/jquery-ui.min.js");
+load(`../bower_components/jquery-ui/jquery-ui.min.js`);
+load(`../bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js`);
 
 // Electron integration 
 const electron=require("electron");

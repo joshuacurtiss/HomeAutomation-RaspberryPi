@@ -13,7 +13,7 @@ html, body {
     background-color: #ccc;
     border: 1px solid #aaa;
 }
-.controlboard i:hover {
+.controlboard i:hover, .controlboard i.active {
     background-color: #ddd;
 }
 .controlboard i:active {

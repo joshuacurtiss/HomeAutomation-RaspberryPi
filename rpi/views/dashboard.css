@@ -73,3 +73,44 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
+/* Event Notifications */
+.eventcontainer {
+    position: absolute;
+    left: 7vw;
+    width: 50vw;
+    padding: 1.5vh 0;
+}
+.eventcomment {
+	position: relative;
+	background: #f3961c;
+    color: white;
+    padding: 0 0.75vw;
+    font-size: 2.75vh;
+    line-height: 5vh;
+	border: 1px solid #d98619;
+    border-radius: 3px;
+    text-align: left;
+}
+.eventcomment:after, .eventcomment:before {
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.eventcomment:after {
+	border-color: rgba(243, 150, 28, 0);
+	border-right-color: #f3961c;
+	border-width: 6px;
+	margin-top: -6px;
+}
+.eventcomment:before {
+	border-color: rgba(217, 134, 25, 0);
+	border-right-color: #d98619;
+	border-width: 7px;
+	margin-top: -7px;
+}

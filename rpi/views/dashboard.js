@@ -1,6 +1,7 @@
 const TIMEFMT="h:mm A";
 const DOWFMT="dddd";
 const DATEFMT="MMMM D";
+const EVENTCOMMENTDELAY=6000;
 
 var dashboardHistory=[];
 
@@ -9,6 +10,7 @@ load(`dashboard.css`);
 ipcRenderer.on('device-update', (event, data) => {
     updateDevice(data.device);
     logEvent(data);
+    displayEventComment(data);
 })
 ipcRenderer.on('shm-update', (event, data) => {
     updateSHM(data);
@@ -193,6 +195,18 @@ function saveDashboard() {
 /* Events */
 
 function logEvent(data) {
-    data.dt=new Date();
     dashboardHistory.push(data);
+}
+
+function displayEventComment(data) {
+    var dt=moment(data.dt);
+    data.displayed=true;
+    $(`<div class="eventcomment">${dt.format(TIMEFMT)}: ${data.comment}</div>`)
+        .appendTo(".eventcontainer")
+        .animateCss("fadeInUp");
+    setTimeout(()=>{
+        $(".eventcontainer .eventcomment").animateCss("fadeOutUp",()=>{
+            $(".eventcontainer .eventcomment").remove();
+        })
+    },EVENTCOMMENTDELAY);
 }

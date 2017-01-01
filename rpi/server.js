@@ -59,8 +59,13 @@ app.post('/api/intrusion', function (req, res) {
 app.post('/api/:type', function (req, res) {
   var type=req.params.type;
   try {
+    // Prep data
     var data=req.body;
+    data.dt=new Date();
+    data.comment=`${data.device.name} is ${data.value}.`;
+    // Push update to dashboard
     win.webContents.send('device-update', data);
+    // Handle notifications
     if( type=="contact" && data.value=="open" ) {
       // TODO: May still have to call `xscreensaver-command -deactivate`?
       win.webContents.send('notification', {

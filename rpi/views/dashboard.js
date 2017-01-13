@@ -113,7 +113,7 @@ function updateDevice(device) {
             .attr("data-value",device.value)
             .find("h1").html(device.name).end()
             .find(".comment").html(device.comment || "").end()
-            .find("i").removeClass().addClass(widgetTypes[device.device][`icon-${device.value.replace(/\W/,"")}`]).end();
+            .find("i").removeClass().addClass(widgetTypes[device.device][`icon-${device.value.toString().replace(/\W/,"")}`]).end();
         var style=null;
         if( device.battery && device.battery>80 ) style="4";
         else if( device.battery && device.battery>60 ) style="3";

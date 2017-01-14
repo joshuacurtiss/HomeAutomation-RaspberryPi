@@ -51,9 +51,9 @@ app.post('/api/shm', function (req, res) {
 
 app.post('/api/intrusion', function (req, res) {
   var data=req.body;
-  var mode=data.value
-  console.log("Intrusion status is "+mode+".");
-  res.send("Intrusion status: "+mode+".");
+  win.webContents.send('intrusion-update', data);
+  console.log("Intrusion status is "+data.value+".");
+  res.send("Intrusion status: "+data.value+".");
 })
 
 app.post('/api/:type', function (req, res) {

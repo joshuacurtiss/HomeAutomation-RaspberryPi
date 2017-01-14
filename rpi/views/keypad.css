@@ -1,9 +1,31 @@
-html, body {
+.keypad {
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
     background-image: url(../img/alarm.png);
     background-size: cover;
-    font-family: "Avenir Next", Arial, Helvetica, sans-serif;
+    z-index: 2;
 }
-.keypad {
+.keypad.alarm {
+  animation: alarmpulse 2s infinite;
+}
+@keyframes alarmpulse {
+    0% {background-color: white;}
+    50% {background-color: yellow;}
+    100% {background-color: white;}
+}
+.keypad .countdown {
+    position: absolute;
+    top: 37vh;
+    left: 17vw;
+    width: 25vw;
+    font-size: 22vh;
+    text-align: center;
+}
+.keypad form {
     width: 250px;
     border-radius: 10px;
     background-color: rgba(245, 245, 245, 0.9);
@@ -11,7 +33,7 @@ html, body {
     margin-top: 2.5%;
     margin-left: 57%;
 }
-.keypad h1 {
+.keypad form h1 {
     font-size: 18px;
     font-weight: normal;
     text-align: center;

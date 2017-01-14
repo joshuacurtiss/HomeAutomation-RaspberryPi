@@ -29,6 +29,7 @@ load(`theme-${data.theme}.css`);
 $.get("splash.html",function(data){$("body").append(data)});
 $.get("dashboard.html",function(data){$("body").append(data)});
 $.get("notification.html",function(data){$("body").append(data)});
+$.get("keypad.html",function(data){$("body").append(data)});
 
 $(document).ready(function(){
     console.log("Hi! Welcome to Pi Guardian.");

@@ -4,6 +4,9 @@
     "startWindowOptions": {"width":800, "height":480},
     "startWindowDevTools": false,
     "refreshInterval": 3600000,
+    "alarmCountdown": 60,
+    "alarmSound": "~/Music/chimes/alert10.mp3",
+    "keypadCountdownSound": "~/Music/chimes/alert15.mp3",
     "ttsCache": "cache",
     "ttsUrl": "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=En-us&q=",
     "widgetTypes": {

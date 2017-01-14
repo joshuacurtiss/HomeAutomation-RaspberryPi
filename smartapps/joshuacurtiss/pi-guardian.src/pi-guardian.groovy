@@ -60,6 +60,12 @@ mappings {
       POST: "setAlarmSystemStatus"
     ]
   }
+  path("/shm/intrusion") {
+    action: [
+      GET: "getIntrusionStatus",
+      POST: "setIntrusionStatus"
+    ]
+  }
 }
 
 /* App Setup */
@@ -149,6 +155,22 @@ def setAlarmSystemStatus(mode) {
 		sendLocationEvent(name:"alarmSystemStatus", value:mode)
 }
 
+def getIntrusionStatus() {
+    def val="off"
+    if( intrusionSwitch && intrusionSwitch.currentValue("switch")[0]!="off" ) val="on"
+    if( intrusionAlarm && intrusionAlarm.currentValue("alarm")[0]!="off" ) val="on"
+    return [value:val]
+}
+
+def setIntrusionStatus(mode) {
+    if(!mode) mode=request.JSON?.value
+    log.debug mode
+    if( intrusionSwitch && mode=="on" ) intrusionSwitch.on()
+    else if( intrusionSwitch && mode=="off" ) intrusionSwitch.off()
+    if( intrusionAlarm && mode=="on" ) intrusionAlarm.both()
+    else if( intrusionAlarm && mode=="off" ) intrusionAlarm.off()
+}
+
 /* Event Handlers */
 
 def generalDeviceEventHandler(evt) {
@@ -184,7 +206,7 @@ def alarmStatusHandler(evt) {
 def intrusionHandler(evt) {
 	def params = [
     	uri: "${settings.uri}/intrusion",
-        body: getEventProps(evt)
+        body: getIntrusionStatus()
     ]
     try {
         log.debug "$params.uri $params.body"

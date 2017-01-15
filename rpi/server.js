@@ -1,6 +1,7 @@
 const electron = require("electron");
 var config = require("config");
-//var exec = require("child_process").exec;
+var os = require('os');
+var exec = require("child_process").exec;
 var express = require('express')
 var app = express()
 
@@ -12,6 +13,10 @@ const widgetTypes=config.get("widgetTypes");
 const q='"';
 
 var win;
+
+function deactivateScreensaver() {
+  if( os.type()=="Linux" ) exec("xscreensaver-command -deactivate");
+}
 
 electron.app.on("ready", () => {
     win=new electron.BrowserWindow(config.get("startWindowOptions"));
@@ -51,6 +56,7 @@ app.post('/api/shm', function (req, res) {
 
 app.post('/api/intrusion', function (req, res) {
   var data=req.body;
+  deactivateScreensaver();
   win.webContents.send('intrusion-update', data);
   console.log("Intrusion status is "+data.value+".");
   res.send("Intrusion status: "+data.value+".");
@@ -67,7 +73,7 @@ app.post('/api/:type', function (req, res) {
     win.webContents.send('device-update', data);
     // Handle notifications
     if( type=="contact" && data.value=="open" ) {
-      // TODO: May still have to call `xscreensaver-command -deactivate`?
+      deactivateScreensaver();
       win.webContents.send('notification', {
         screen:data.type,
         msg:data.device.name,

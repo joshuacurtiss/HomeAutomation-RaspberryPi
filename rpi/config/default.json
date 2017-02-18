@@ -72,6 +72,12 @@
             "actions": {"off":"on", "on":"off"},
             "classes": "red x1"
         },
+        "IntrusionNotifier": {
+            "icon-off": "fa fa-fw fa-lightbulb-o dim",
+            "icon-on": "fa fa-fw fa-lightbulb-o",
+            "actions": {"off":"on", "on":"off"},
+            "classes": "red x1"
+        },
         "Mobile Presence": {
             "icon-notpresent": "fa fa-fw fa-map-marker dim",
             "icon-present": "fa fa-fw fa-map-marker",

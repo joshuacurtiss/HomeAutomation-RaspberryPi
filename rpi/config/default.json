@@ -54,6 +54,12 @@
             "actions": {"off":"on", "on":"off"},
             "classes": "red x1"
         },
+        "GE In-Wall Smart Dimmer": {
+            "icon-off": "fa fa-fw fa-lightbulb-o dim",
+            "icon-on": "fa fa-fw fa-lightbulb-o",
+            "actions": {"off":"on", "on":"off"},
+            "classes": "red x1"
+        },
         "Switch Capability": {
             "icon-off": "fa fa-fw fa-lightbulb-o dim",
             "icon-on": "fa fa-fw fa-lightbulb-o",

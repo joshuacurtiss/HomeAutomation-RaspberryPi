@@ -113,7 +113,7 @@ def getDeviceProps(device) {
     	id:device.id, 
         device:device.name, 
         name:device.displayName, 
-        value:con?con:(pres?pres:(lock?lock:sw)),
+        value:pres?pres:(lock?lock:(sw?sw:con)),
         battery:device.currentValue("battery")
     ];
 }

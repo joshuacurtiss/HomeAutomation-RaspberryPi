@@ -67,7 +67,7 @@ function revealDashboard(cb) {
 
 function refreshDashboard(cb) {
     $.ajax({
-        url: data.smartthings.url+"devices",
+        url: data.smartthings.uri+"/devices",
         type: "GET",
         dataType: "json",
         crossDomain: true,
@@ -142,7 +142,7 @@ function clickDevice() {
         if(action) {
             $(this).animateCss("pulse");
             $.ajax({
-                url: data.smartthings.url+"devices/"+id,
+                url: data.smartthings.uri+"/devices/"+id,
                 type: "POST",
                 data: postData,
                 dataType: 'json',

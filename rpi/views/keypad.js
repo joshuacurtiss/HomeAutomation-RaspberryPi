@@ -26,7 +26,7 @@ $(document).ready(function(){
     for( var i=0 ; i<passcodeLength ; i++ ) $(".passcodeui").append('<i class="fa fa-circle-thin"></i>');
     // Check initial intrusion status
     $.ajax({
-        url: data.smartthings.url+"shm/intrusion",
+        url: data.smartthings.uri+"/shm/intrusion",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -91,7 +91,7 @@ function handleKeypadSubmit(){
         if( codedata.action ) $.get(codedata.action);
         // Turn off the intrusion notifiers:
         $.ajax({
-            url: data.smartthings.url+"shm/intrusion",
+            url: data.smartthings.uri+"/shm/intrusion",
             type: "POST",
             data: JSON.stringify({value:"off"}),
             dataType: 'json',

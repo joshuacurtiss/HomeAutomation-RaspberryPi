@@ -22,7 +22,8 @@ definition(
     iconUrl: "https://raw.githubusercontent.com/joshuacurtiss/HomeAutomation-RaspberryPi/master/logo/logo-1x.png",
     iconX2Url: "https://raw.githubusercontent.com/joshuacurtiss/HomeAutomation-RaspberryPi/master/logo/logo-2x.png",
     iconX3Url: "https://raw.githubusercontent.com/joshuacurtiss/HomeAutomation-RaspberryPi/master/logo/logo-3x.png",
-    oauth: [displayName: "Pi Guardian", displayLink: "https://raw.githubusercontent.com/joshuacurtiss/HomeAutomation-RaspberryPi/master/logo/logo-3x.png"])
+    oauth: [displayName: "Pi Guardian", displayLink: "https://raw.githubusercontent.com/joshuacurtiss/HomeAutomation-RaspberryPi/master/logo/logo-3x.png"]
+)
 
 
 preferences {
@@ -37,15 +38,19 @@ preferences {
     	input "intrusionSwitch", "capability.switch", title: "Which switch?", multiple: true, required: false
         input "intrusionAlarm", "capability.alarm", title: "Which alarm?", multiple: true, required: false
     }
-    section("API endpoint:") {
-    	input "uri", "text", title: "URL:"
-    }
 }
 
 mappings {
   path("/devices") {
     action: [
       GET: "getDeviceStatus"
+    ]
+  }
+  path("/clienturi") {
+  	action: [
+      GET: "getClientUri",
+      POST: "addClientUri",
+      DELETE: "removeClientUri"
     ]
   }
   path("/devices/:id") {
@@ -82,6 +87,7 @@ def updated() {
 }
 
 def initialize() {
+	state.uri=[]
 	subscribe(contact, "contact", generalDeviceEventHandler)
     subscribe(presence, "presence", generalDeviceEventHandler) 
     subscribe(switches, "switch", generalDeviceEventHandler)
@@ -107,7 +113,7 @@ def getDeviceProps(device) {
     	id:device.id, 
         device:device.name, 
         name:device.displayName, 
-        value:con?con:(pres?pres:(lock?lock:sw)),
+        value:pres?pres:(lock?lock:(sw?sw:con)),
         battery:device.currentValue("battery")
     ];
 }
@@ -125,6 +131,34 @@ def findDevice(id) {
 }
 
 /* Web API */
+
+def addClientUri() {
+	if( state.uri.contains(params.uri) ) {
+		log.debug "The URI ${params.uri} already exists in the list."
+        return [success:false];
+	} else {
+        log.debug "Setting URI to ${params.uri}"
+        state.uri << params.uri
+	    return [success:true]
+    }
+}
+
+def getClientUri() {
+	return state.uri
+}
+
+def removeClientUri() {
+	def uri=request.JSON?.uri
+    if( uri && state.uri.contains(uri) ) {
+    	log.debug "Deleting ${uri}"
+        state.uri=state.uri - uri
+    } else if( uri ) { 
+    	log.debug "The URI ${uri} was not in the list."
+    } else {
+    	log.debug "Clearing all URIs."
+		state.uri=[]
+    }
+}
 
 def getDeviceStatus() {
 	def id=params.id
@@ -175,45 +209,39 @@ def setIntrusionStatus(mode) {
 
 def generalDeviceEventHandler(evt) {
 	def params = [
-        uri: "${settings.uri}/${evt.name}",
+        uri: "/${evt.name}",
         body: getEventProps(evt)
     ]
-	try {
-    	log.debug "$params.uri $params.body"
-        httpPostJson(params) { resp ->
-            log.debug "${resp.status}: ${resp.data}"
-        }
-    } catch (e) {
-        log.debug "something went wrong: $e"
-    }
+    broadcastPostJson(params)
 }
 
 def alarmStatusHandler(evt) {
 	def params = [
-    	uri: "${settings.uri}/shm",
+    	uri: "/shm",
         body: getAlarmSystemStatus()
     ]
-	try {
-        log.debug "$params.uri $params.body"
-        httpPostJson(params) { resp ->
-            log.debug "${resp.status}: ${resp.data}"
-        }
-    } catch (e) {
-        log.error "something went wrong: $e"
-    }
+    broadcastPostJson(params)
 }
 
 def intrusionHandler(evt) {
 	def params = [
-    	uri: "${settings.uri}/intrusion",
+    	uri: "/intrusion",
         body: getIntrusionStatus()
     ]
-    try {
-        log.debug "$params.uri $params.body"
-        httpPostJson(params) { resp ->
-            log.debug "${resp.status}: ${resp.data}"
-        }
-    } catch (e) {
-        log.error "something went wrong: $e"
+    broadcastPostJson(params)
+}
+
+def broadcastPostJson(params) {
+	def origUri=params.uri
+    for( u in state.uri ) {
+		params.uri=u+origUri
+	    try {
+    	    log.debug "$params.uri $params.body"
+        	httpPostJson(params) { resp ->
+            	log.debug "${resp.status}: ${resp.data}"
+	        }
+    	} catch (e) {
+        	log.error "something went wrong: $e"
+    	}
     }
 }

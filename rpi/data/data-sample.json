@@ -7,7 +7,7 @@
         "9999": {"name":"Duress","type":"duress"}
     },
     "smartthings": {
-        "url": "https://your-smartthings-app-url/",
+        "uri": "https://your-smartthings-app-url",
         "token": "your-smartthings-oauth2-token"
     },
     "widgets": {

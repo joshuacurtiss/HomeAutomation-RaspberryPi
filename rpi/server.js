@@ -46,6 +46,14 @@ app.post('/api/message', function (req, res) {
   res.send('Thanks for your message! ' + JSON.stringify(req.body));
 })
 
+app.post('/api/keypad', function (req, res) {
+  var data=req.body;
+  var code=data.code || "";
+  win.webContents.send('keypad-update', data);
+  console.log("Set keypad code to "+code+".");
+  res.send("Setting keypad code.");
+})
+
 app.post('/api/shm', function (req, res) {
   var data=req.body;
   var mode=data.value; // "off", "stay", "away"

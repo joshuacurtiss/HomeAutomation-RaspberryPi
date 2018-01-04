@@ -20,6 +20,11 @@ ipcRenderer.on('intrusion-update', (event, data) => {
     checkIntrusion(data);
 })
 
+ipcRenderer.on('keypad-update', (event, data) => {
+    var code=data.code || "";
+    updatePasscode(code.replace(/[^0-9]/g,""));
+})
+
 $(document).ready(function(){
     // Draw the passcode dots
     var passcodeLength=data.passcodeLength || 4;
@@ -127,8 +132,6 @@ function addPasscodeDigit(digit){
     }
     // Update passcode
     updatePasscode(passcode);
-    // Submit if passcode is full
-    if( passcode.length==$passcodedots.length ) $(".keypad").submit();
 }
 function updatePasscode(passcode){
     $("#passcode").val(passcode);
@@ -137,4 +140,7 @@ function updatePasscode(passcode){
         .each(function(key,obj){
             $(obj).addClass( (key<passcode.length)?"fa-circle":"fa-circle-thin" );
         });
+    // Submit if passcode is full
+    var $passcodedots=$(".passcodeui i");
+    if( passcode.length==$passcodedots.length ) $(".keypad").submit();
 }

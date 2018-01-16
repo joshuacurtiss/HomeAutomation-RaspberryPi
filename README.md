@@ -25,12 +25,7 @@ Integration with the SmartThings hub is the key to the app being of any value. T
 must be installed and configured on your SmartThings deployment to provide the integration between 
 SmartThings and the Raspberry Pi app.
 
-Optionally, installing [Jasper](http://jasperproject.github.io) allows you to have voice control abilities. 
-This may seem unnecessary if you use Amazon Echo, but it presently has restrictions and limitations that 
-make it inconvenient for home security. Implementing local voice control gives complete control, albeit in 
-a secondary system.
-
-Also optional, installing [Shairport Sync](https://github.com/mikebrady/shairport-sync) allows the device to
+Optionally, installing [Shairport Sync](https://github.com/mikebrady/shairport-sync) allows the device to
 double as an AirPlay speaker for whatever room it is placed in.
 
 ## Technologies used ##
@@ -39,7 +34,6 @@ double as an AirPlay speaker for whatever room it is placed in.
   * [Google Translate](https://translate.google.com) for TTS
   * [SmartThings](https://www.smartthings.com), along with the Pi Guardian SmartApp for triggering events
   * Optionally, [IFTTT](https://ifttt.com) for triggering or receiving events
-  * Optionally, [Jasper](http://jasperproject.github.io) for voice control 
   * Optionally, [Shairport Sync](https://github.com/mikebrady/shairport-sync) for AirPlay functionality
 
 ## Installation Notes ##
@@ -52,18 +46,18 @@ These are not thorough notes and need some more vetting.
   * [Raspberry Pi touchscreen](https://www.raspberrypi.org/products/raspberry-pi-touch-display)
   * [SmartThings Hub](https://www.smartthings.com)
   * Any way you choose to mount it, for example, this [RS Premium Touchscreen Case](https://www.amazon.com/dp/B01GQFUWIC)
-  * Speaker of your choice (a Bluetooth speaker to reduce amount of wires)
+  * Speaker of your choice (either wired or Bluetooth)
   * Obvious miscellaneous Raspberry Pi necessities, like a power cord and MicroSDHC card
 
 Other optional equipment you may choose to acquire:
 
   * If using Jasper, a decent omnidirection microphone
-  * Unrelated to this project, you may choose to acquire some [Amazon Echos](https://www.amazon.com/echo) or 
-    [Dots](https://www.amazon.com/dot) for whole-house voice control
+  * Unrelated to this project, you may choose to acquire some [Amazon Echos](https://www.amazon.com/echo), 
+    [Dots](https://www.amazon.com/dot), or [Google Homes](https://google.com/home) for whole-house voice control
 
 ### Basic Instructions/Tech Notes ###
 
-1. Download [Raspbian Jessie](https://www.raspberrypi.org/downloads/raspbian) and install on the Raspberry Pi.
+1. Download [Raspbian](https://www.raspberrypi.org/downloads/raspbian) and install on the Raspberry Pi.
 
 2. Do some some configuration in the Preferences panel. 
    * In the Raspberry Pi Configuration panel, enable SSH and VNC. This makes the rest of setup easier.
@@ -86,7 +80,7 @@ Other optional equipment you may choose to acquire:
    sudo apt-get install screen
    mkdir ~/Documents/node
    cd ~/Documents/node
-   git clone https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi.git homeautomation
+   git clone https://github.com/joshuacurtiss/homeautomation.git
    cd homeautomation/rpi
    npm install
    screen
@@ -127,12 +121,6 @@ Other optional equipment you may choose to acquire:
   sudo apt-get install unclutter
   ```
 
-* Install `xscreensaver`. This will be handy to avoid burn-in. Adjust settings as desired once installed.
-
-  ```
-  sudo apt-get install xscreensaver xscreensaver-gl-extra xscreensaver-data-extra
-  ```
-
 ### Installation of Miscellaneous Niceties ###
 
 * Installing Shairport Sync
@@ -146,7 +134,8 @@ Other optional equipment you may choose to acquire:
 
 * Installing Jasper Project
 
-  This is future. Still need to figure out how to install and configure this. The goal is to have your own "Jarvis" that
-  can perform any spoken commands you want, and not relying on restrictions or limitations of Alexa.
+  This is future. Still need to figure out how to install and configure this, or if it's better to use a 
+  different STT system. The goal is to have your own "Jarvis" that can perform any spoken commands you want, 
+  and not limited by restrictions or limitations of Alexa or Google Home.
 
   Install using [their instructions](http://jasperproject.github.io/documentation/installation).

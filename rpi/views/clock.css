@@ -1,0 +1,23 @@
+.clock {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    color: white;
+    text-align: center;
+    animation: background-fade 120s infinite;
+}
+@keyframes background-fade {
+    0% {background-color: #000;}
+    50% {background-color: #222;}
+    100% {background-color: #000;}
+}
+.clock h1 {
+    font-size: 6vh;
+    font-weight: normal;
+    margin: 15vh 0 11vh 0;
+}
+.clock h2 {
+    font-size: 32vh;
+    margin: 10vh 0;
+}

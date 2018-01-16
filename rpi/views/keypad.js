@@ -17,6 +17,7 @@ var keypadTimer,
 load(`keypad.css`);
 
 ipcRenderer.on('intrusion-update', (event, data) => {
+    resetClockCountdown();
     checkIntrusion(data);
 })
 

@@ -8,11 +8,13 @@ var dashboardHistory=[];
 load(`dashboard.css`);
 
 ipcRenderer.on('device-update', (event, data) => {
+    resetClockCountdown();
     updateDevice(data.device);
     logEvent(data);
     displayEventComment(data);
 })
 ipcRenderer.on('shm-update', (event, data) => {
+    resetClockCountdown();
     updateSHM(data);
     logEvent(data);
 })
@@ -52,6 +54,7 @@ function initDashboard(cb){
     updateTimeWidget();
     refreshDashboard(cb);
     setInterval(refreshDashboard,config.get("refreshInterval"));
+    resetClockCountdown();
     $(".dashboard .widget").click(clickDevice);
 }
 
@@ -131,6 +134,7 @@ function updateDevice(device) {
 function clickDevice() {
     var id=this.id;
     var type=$(this).attr("data-type");
+    resetClockCountdown();
     var jiggling=$(this).hasClass("jiggle");
     if( jiggling ) {
         console.log(`${type} "${id}" is jiggling, so no action will be performed.`);

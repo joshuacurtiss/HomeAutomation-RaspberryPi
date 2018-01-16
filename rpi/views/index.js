@@ -26,19 +26,20 @@ let ipcRenderer=electron.ipcRenderer;
 load(`index.css`);
 load(`theme-${data.theme}.css`);
 
-$.get("splash.html",function(data){$("body").append(data)});
-$.get("dashboard.html",function(data){$("body").append(data)});
-$.get("notification.html",function(data){$("body").append(data)});
-$.get("keypad.html",function(data){$("body").append(data)});
-
 $(document).ready(function(){
     console.log("Hi! Welcome to Pi Guardian.");
-    setTimeout(function(){
+    $.when(
+        $.get("splash.html",function(data){$("body").append(data)}),
+        $.get("dashboard.html",function(data){$("body").append(data)}),
+        $.get("notification.html",function(data){$("body").append(data)}),
+        $.get("keypad.html",function(data){$("body").append(data)}),
+        $.get("clock.html",function(data){$("body").append(data)})
+    ).done(function(){
         runSplash(function(){
             initDashboard(function(){
                 console.log("Dashboard initialized.");
                 endSplash(revealDashboard);
             });
         });
-    }, 300);
+    });
 });

@@ -4,6 +4,7 @@
     "startWindowOptions": {"width":800, "height":480},
     "startWindowDevTools": false,
     "refreshInterval": 3600000,
+    "clockTimeout": 1200000,
     "alarmCountdown": 60,
     "alarmSound": "~/Music/chimes/alert10.mp3",
     "keypadCountdownSound": "~/Music/chimes/alert15.mp3",

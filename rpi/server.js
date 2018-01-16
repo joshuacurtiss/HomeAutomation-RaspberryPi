@@ -14,10 +14,6 @@ const q='"';
 
 var win;
 
-function deactivateScreensaver() {
-  if( os.type()=="Linux" ) exec("xscreensaver-command -deactivate");
-}
-
 electron.app.on("ready", () => {
     win=new electron.BrowserWindow(config.get("startWindowOptions"));
     win.loadURL(`file://${__dirname}${config.get("startWindowFile")}`);
@@ -64,7 +60,6 @@ app.post('/api/shm', function (req, res) {
 
 app.post('/api/intrusion', function (req, res) {
   var data=req.body;
-  deactivateScreensaver();
   win.webContents.send('intrusion-update', data);
   console.log("Intrusion status is "+data.value+".");
   res.send("Intrusion status: "+data.value+".");
@@ -81,7 +76,6 @@ app.post('/api/:type', function (req, res) {
     win.webContents.send('device-update', data);
     // Handle notifications
     if( type=="contact" && data.value=="open" ) {
-      deactivateScreensaver();
       win.webContents.send('notification', {
         screen:data.type,
         msg:data.device.name,

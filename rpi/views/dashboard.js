@@ -65,7 +65,7 @@ function revealDashboard(cb) {
             setTimeout(`$("#${elem.id}").removeClass("hidden").animateCss("bounceInRight")`,index*80);
         }).end()
         .removeClass("hidden");
-    $(".controlboard").removeClass("hidden").animateCss("slideInUp");
+    $(".controlboard").removeClass("hidden").animateCss("fadeIn");
 }
 
 function refreshDashboard(cb) {

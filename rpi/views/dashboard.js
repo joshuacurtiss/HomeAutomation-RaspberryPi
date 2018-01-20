@@ -4,6 +4,7 @@ const DATEFMT="MMMM D";
 const EVENTCOMMENTDELAY=6000;
 
 var dashboardHistory=[];
+var errorHistory=[];
 
 load(`dashboard.css`);
 
@@ -11,7 +12,6 @@ ipcRenderer.on('device-update', (event, data) => {
     resetClockCountdown();
     updateDevice(data.device);
     logEvent(data);
-    displayEventComment(data);
 })
 ipcRenderer.on('shm-update', (event, data) => {
     resetClockCountdown();
@@ -81,7 +81,7 @@ function refreshDashboard(cb) {
                 xhr.setRequestHeader("Authorization", "Bearer " + data.smartthings.token);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert("Received error handshaking with SmartThings app.")
+                logError({dt:new Date(),comment:"Received error handshaking with SmartThings app."});
             }
         });
     }
@@ -104,7 +104,7 @@ function refreshDashboard(cb) {
                 if(cb)cb();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert("Received error loading initial data.")
+                logError({dt:new Date(),comment:"Received error loading initial data."});
             }
         });
     }
@@ -215,8 +215,15 @@ function saveDashboard() {
 
 /* Events */
 
+function logError(data) {
+    errorHistory.push(data);
+    console.error(data);
+    // TODO: Write a means to display errors that doesn't use alert()
+}
+
 function logEvent(data) {
     dashboardHistory.push(data);
+    displayEventComment(data);
 }
 
 function displayEventComment(data) {

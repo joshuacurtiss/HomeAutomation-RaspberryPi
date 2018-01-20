@@ -69,28 +69,45 @@ function revealDashboard(cb) {
 }
 
 function refreshDashboard(cb) {
-    $.ajax({
-        url: data.smartthings.uri+"/devices",
-        type: "GET",
-        dataType: "json",
-        crossDomain: true,
-        cache: false,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer " + data.smartthings.token);
-        },
-        success: function (data) {
-            for( var widget of data ) {
-                if( widget.device=="alarmSystemStatus" ) updateSHM(widget);
-                else updateDevice(widget);
+    // Register this client URI to be notified of activity (unless one isn't provided in configs)
+    if( config.get("address").length && data.smartthings.uri.length ) {
+        $.ajax({
+            url: data.smartthings.uri+"/clienturi",
+            type: "POST",
+            data: {uri:`${config.get("address")}:${config.get("port")}/api`},
+            crossDomain: true,
+            cache: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + data.smartthings.token);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Received error handshaking with SmartThings app.")
             }
-            if(cb)cb();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Received error loading initial data.")
-        }
-    }).fail(function () {
-        alert("Failed to load initial data.")
-    });
+        });
+    }
+    // Get a full device summary update (unless a SmartThings URI isn't provided)
+    if( data.smartthings.uri.length ) {
+        $.ajax({
+            url: data.smartthings.uri+"/devices",
+            type: "GET",
+            dataType: "json",
+            crossDomain: true,
+            cache: false,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + data.smartthings.token);
+            },
+            success: function (data) {
+                for( var widget of data ) {
+                    if( widget.device=="alarmSystemStatus" ) updateSHM(widget);
+                    else updateDevice(widget);
+                }
+                if(cb)cb();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Received error loading initial data.")
+            }
+        });
+    }
 }
 
 function updateTimeWidget()

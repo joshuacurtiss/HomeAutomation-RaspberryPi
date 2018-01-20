@@ -133,12 +133,12 @@ def findDevice(id) {
 /* Web API */
 
 def addClientUri() {
-	if( state.uri.contains(params.uri) ) {
+	if( state.uri.find {it.uri==params.uri} ) {
 		log.debug "The URI ${params.uri} already exists in the list."
         return [success:false];
 	} else {
-        log.debug "Setting URI to ${params.uri}"
-        state.uri << params.uri
+        log.debug "Adding URI ${params.uri}"
+        state.uri << [uri:params.uri, fails:0, successes:0]
 	    return [success:true]
     }
 }
@@ -147,11 +147,12 @@ def getClientUri() {
 	return state.uri
 }
 
-def removeClientUri() {
-	def uri=request.JSON?.uri
-    if( uri && state.uri.contains(uri) ) {
+def removeClientUri(uri) {
+	if(!uri) uri=request.JSON?.uri
+    def match=state.uri.find {it.uri==uri}
+    if( uri && match ) {
     	log.debug "Deleting ${uri}"
-        state.uri=state.uri - uri
+        state.uri=state.uri - match
     } else if( uri ) { 
     	log.debug "The URI ${uri} was not in the list."
     } else {
@@ -234,14 +235,23 @@ def intrusionHandler(evt) {
 def broadcastPostJson(params) {
 	def origUri=params.uri
     for( u in state.uri ) {
-		params.uri=u+origUri
+		params.uri=u.uri+origUri
 	    try {
     	    log.debug "$params.uri $params.body"
         	httpPostJson(params) { resp ->
-            	log.debug "${resp.status}: ${resp.data}"
+            	if( resp.status==200 ) {
+                	u.put("successes",u.successes+1)
+                    u.put("fails",0)
+                }
+            	log.debug "${resp.status}: ${resp.data} and there have been ${u.successes} successes."
 	        }
     	} catch (e) {
-        	log.error "something went wrong: $e"
+            u.put("fails",u.fails+1);
+        	log.error "Something went wrong: $e and it has failed ${u.fails} time(s)."
+            if( u.fails >= 20 ) {
+            	log.debug "I'm removing ${u.uri} from the list for having too many failures."
+                removeClientUri(u.uri)
+            }
     	}
     }
 }

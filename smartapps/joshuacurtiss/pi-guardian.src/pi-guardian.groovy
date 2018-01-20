@@ -83,11 +83,15 @@ def installed() {
 def updated() {
 	log.debug "Updated with settings: ${settings}"
 	unsubscribe()
-	initialize()
+    subscribeAll()
 }
 
 def initialize() {
 	state.uri=[]
+    subscribeAll()
+}
+
+def subscribeAll() {
 	subscribe(contact, "contact", generalDeviceEventHandler)
     subscribe(presence, "presence", generalDeviceEventHandler) 
     subscribe(switches, "switch", generalDeviceEventHandler)

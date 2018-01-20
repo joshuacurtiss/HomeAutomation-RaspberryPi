@@ -27,16 +27,26 @@ definition(
 
 
 preferences {
-	section("Control/monitor the following devices:") {
-		input "contact", "capability.contactSensor", title: "Where?", multiple: true, required: false
-		input "presence", "capability.presenceSensor", title: "Which sensor?", multiple: true, required: false
-    	input "switches", "capability.switch", title: "Which switch?", multiple: true, required: false
-        input "bulb", "capability.bulb", title: "Which bulbs?", multiple: true, required: false
-        input "lock", "capability.lock", title: "Which locks?", multiple: true, required: false
-	}
-    section("Intrusion detection:") {
-    	input "intrusionSwitch", "capability.switch", title: "Which switch?", multiple: true, required: false
-        input "intrusionAlarm", "capability.alarm", title: "Which alarm?", multiple: true, required: false
+	page(name: "pageOne", title: "Devices", nextPage: "pageTwo", uninstall: true) {
+        section("Control/monitor the following devices:") {
+            input "contact", "capability.contactSensor", title: "Where?", multiple: true, required: false
+            input "presence", "capability.presenceSensor", title: "Which sensor?", multiple: true, required: false
+            input "switches", "capability.switch", title: "Which switch?", multiple: true, required: false
+            input "bulb", "capability.bulb", title: "Which bulbs?", multiple: true, required: false
+            input "lock", "capability.lock", title: "Which locks?", multiple: true, required: false
+        }
+    }
+    page(name: "pageTwo", title: "Intrusion/Alarm", install: true, uninstall: true) {
+        section("These devices will trigger an intrusion:") {
+            input "intrusionSwitch", "capability.switch", title: "Which switch?", multiple: true, required: false
+            input "intrusionAlarm", "capability.alarm", title: "Which alarm?", multiple: true, required: false
+        }
+        section("If no code successfully cleared the intrusion:") {
+        	paragraph "You can specify which switch or alarm is triggered after the intrusion was not cleared for the designated amount of time."
+            input "noclearDelay", "number", title: "Wait how many seconds?", required: false
+            input "noclearSwitch", "capability.switch", title: "Which switch?", multiple: true, required: false
+            input "noclearAlarm", "capability.alarm", title: "Which alarm?", multiple: true, required: false
+        }
     }
 }
 
@@ -204,10 +214,30 @@ def getIntrusionStatus() {
 def setIntrusionStatus(mode) {
     if(!mode) mode=request.JSON?.value
     log.debug mode
-    if( intrusionSwitch && mode=="on" ) intrusionSwitch.on()
-    else if( intrusionSwitch && mode=="off" ) intrusionSwitch.off()
-    if( intrusionAlarm && mode=="on" ) intrusionAlarm.both()
-    else if( intrusionAlarm && mode=="off" ) intrusionAlarm.off()
+    if( mode=="on" ) {
+	    // First, turn on intrusion notifiers
+	    if( intrusionSwitch ) intrusionSwitch.on()
+	    if( intrusionAlarm ) intrusionAlarm.both()
+        // Set timer to check status after the delay period
+    	log.debug "Intrusion is on! I will wait $noclearDelay seconds and check on things."
+        runIn(noclearDelay, checkIntrusionStatus)
+    } else {
+    	// First, turn off intrusion notifiers
+    	if( intrusionSwitch ) intrusionSwitch.off()
+        if( intrusionAlarm ) intrusionAlarm.off()
+        // Next, turn off the alarms, in case they were on
+        if( noclearSwitch ) noclearSwitch.off()
+        if( noclearAlarm ) noclearAlarm.off()
+    }
+}
+
+def checkIntrusionStatus() {
+	def intr=getIntrusionStatus()
+    if( intr.value=="on" ) {
+    	log.debug "Kicking off the alarms!!!"
+        if( noclearSwitch ) noclearSwitch.on()
+        if( noclearAlarm ) noclearAlarm.both()
+    }
 }
 
 /* Event Handlers */
@@ -229,11 +259,13 @@ def alarmStatusHandler(evt) {
 }
 
 def intrusionHandler(evt) {
+	def intr=getIntrusionStatus()
 	def params = [
     	uri: "/intrusion",
-        body: getIntrusionStatus()
+        body: intr
     ]
     broadcastPostJson(params)
+    setIntrusionStatus(intr.value)
 }
 
 def broadcastPostJson(params) {

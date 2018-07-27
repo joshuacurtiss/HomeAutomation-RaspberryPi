@@ -42,6 +42,14 @@
             "actions": {"locked":"unlock", "unlocked":"lock"},
             "classes": "green x1"
         },
+        "Schlage Touchscreen Deadbolt FE469NX Z-Wave Lock": {
+            "icon-locked": "fa fa-fw fa-lock dim",
+            "icon-unlocked": "fa fa-fw fa-unlock-alt",
+            "icon-unlockedwithtimeout": "fa fa-fw fa-unlock-alt",
+            "icon-unknown": "fa fa-fw fa-question-circle-o dim",
+            "actions": {"locked":"unlock", "unlocked":"lock"},
+            "classes": "green x1"
+        },
         "Lock Capability": {
             "icon-locked": "fa fa-fw fa-lock dim",
             "icon-unlocked": "fa fa-fw fa-unlock-alt",

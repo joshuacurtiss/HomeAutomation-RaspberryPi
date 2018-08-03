@@ -29,6 +29,11 @@
             "icon-open": "fa fa-fw fa-expand r45",
             "classes": "pink x1"
         },
+        "Monoprice Z-Wave Plus Recessed Door/Window Sensor (15268)": {
+            "icon-closed": "fa fa-fw fa-compress r45 dim",
+            "icon-open": "fa fa-fw fa-expand r45",
+            "classes": "pink x1"
+        },
         "Contact Sensor Capability": {
             "icon-closed": "fa fa-fw fa-compress r45 dim",
             "icon-open": "fa fa-fw fa-expand r45",

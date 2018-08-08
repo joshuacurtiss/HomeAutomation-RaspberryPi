@@ -28,10 +28,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi.git"
+    "url": "https://github.com/joshuacurtiss/homeautomation.git"
   },
   "bugs": {
-    "url": "https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi/issues"
+    "url": "https://github.com/joshuacurtiss/homeautomation/issues"
   },
-  "homepage": "https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi"
+  "homepage": "https://github.com/joshuacurtiss/homeautomation"
 }

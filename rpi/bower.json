@@ -6,7 +6,7 @@
     "Josh Curtiss <josh@curtiss.me>"
   ],
   "license": "GPL-3.0",
-  "homepage": "https://github.com/joshuacurtiss/HomeAutomation-RaspberryPi",
+  "homepage": "https://github.com/joshuacurtiss/homeautomation",
   "private": true,
   "ignore": [
     "**/.*",

@@ -2,22 +2,23 @@
   "name": "homeautomation",
   "version": "0.2.0",
   "description": "App for handling home automation with the Raspberry Pi.",
-  "main": "server.js",
   "scripts": {
-    "start": "electron server.js",
-    "build-osx": "electron-packager . PiGuardian --platform=darwin --ignore=node_modules/electron-* --out=dist --icon '../logo/logo.icns' --asar --overwrite",
-    "build-linux": "electron-packager . PiGuardian --platform=linux --ignore=node_modules/electron-* --out=dist --icon '../logo/logo.ico' --asar --overwrite",
-    "postinstall": "node_modules/bower/bin/bower install -F"
+    "start": "yarn && electron rpi/server.js"
   },
   "author": "Josh Curtiss <josh@curtiss.me>",
   "license": "GPL-3.0",
   "dependencies": {
+    "animate.css": "^3.7.0",
     "body-parser": "^1.18.3",
     "bower": "^1.8.4",
     "config": "^2.0.1",
     "electron": "^2.0.9",
     "express": "^4.16.3",
+    "font-awesome": "^4.7.0",
     "howler": "^2.0.15",
+    "jquery": "^3.3.1",
+    "jquery-ui-dist": "^1.12.1",
+    "jquery-ui-touch-punch": "^0.2.3",
     "moment": "^2.22.2",
     "play-sound": "^1.1.2",
     "query-string": "^6.1.0",

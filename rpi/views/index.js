@@ -6,16 +6,16 @@ let data=require("../data/data.json");
 // Global libraries and assets
 const moment=require(`moment`);
 const fs=require(`fs`);
-const jQuery=$=require("../bower_components/jquery/dist/jquery.min.js");
+const jQuery=$=require("../../node_modules/jquery/dist/jquery.min.js");
 const load=require("../js/resourceLoader.js");
 const request=require(`request`);
 require(`howler`);
 load(`global.css`);
 load(`../js/jquery.animateCss.js`);
-load(`../bower_components/animate.css/animate.min.css`);
-load(`../bower_components/font-awesome/css/font-awesome.min.css`);
-load(`../bower_components/jquery-ui/jquery-ui.min.js`);
-load(`../bower_components/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js`);
+load(`../../node_modules/animate.css/animate.min.css`);
+load(`../../node_modules/font-awesome/css/font-awesome.min.css`);
+load(`../../node_modules/jquery-ui-dist/jquery-ui.min.js`);
+load(`../../node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js`);
 
 // Electron integration 
 const electron=require("electron");

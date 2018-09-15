@@ -81,11 +81,10 @@ Other optional equipment you may choose to acquire:
    mkdir ~/Documents/node
    cd ~/Documents/node
    git clone https://github.com/joshuacurtiss/homeautomation.git
-   cd homeautomation/rpi
-   npm install
+   cd homeautomation
    screen
    export DISPLAY=:0.0
-   NODE_ENV=production npm start
+   NODE_ENV=production yarn start
    ```
    You'll also want to place sound clips somewhere in your system and create a `production.js` config file
    that reflects the sound clip paths.
